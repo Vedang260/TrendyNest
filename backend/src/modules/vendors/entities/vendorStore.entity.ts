@@ -9,20 +9,27 @@ export class VendorStores{
     @Column('uuid')
     vendorId: string;
 
+    @Column('uuid')
+    addressId: string;
+
+    @Column('uuid')
+    categoryId: string;
+
+    @Column()
+    store_name: string;
+
+    @Column()
+    store_description: string;
+
     @Column()
     business_email: string;
 
     @Column()
-    
-    @Column()
-    business_phone: 
-
-    @Column({ unique: true })
-    email: string;
+    business_phone: string;
 
     @Column()
+    status: 
     
-
     @CreateDateColumn()
     createdAt: Date;
 
