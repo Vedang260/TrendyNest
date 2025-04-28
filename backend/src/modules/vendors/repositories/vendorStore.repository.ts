@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VendorStores } from '../entities/vendorStore.entity';
 import { CreateVendorStoreDto } from '../dtos/createVendorStore.dto';
+import { UpdateVendorStoreDto } from '../dtos/updateVendorStore.dto';
 
 @Injectable()
 export class VendorStoreRepository{
@@ -22,7 +23,7 @@ export class VendorStoreRepository{
         }
     }
 
-    // deletes a category
+    // deletes a vendor store
     async deleteVendorStore(vendorStoreId: string): Promise<boolean> {
         try{
             const result = await this.vendorStoreRepository.delete(vendorStoreId);
@@ -33,39 +34,24 @@ export class VendorStoreRepository{
         }
     }
 
-    async updateVendorStore(subCategoryId: string, updateSubCategoryDto: UpdateSubCategoryDto): Promise<boolean>{
+    // update vendor store
+    async updateVendorStore(vendorStoreId: string, updateVendorStoreDto: UpdateVendorStoreDto): Promise<boolean>{
         try{
-            const result = await this.vendorStoreRepository.update({ subCategoryId}, updateSubCategoryDto);
+            const result = await this.vendorStoreRepository.update({ vendorStoreId}, updateVendorStoreDto);
             return result.affected ? result.affected > 0 : false;
         }catch(error){
-            console.error('Error in updating a sub-category ', error.message);
-            throw new InternalServerErrorException('Error in updating a sub-category');
+            console.error('Error in updating a vendor store', error.message);
+            throw new InternalServerErrorException('Error in updating a vendor store');
         }
     }
 
-    // get all sub-categories
-    async findAll(): Promise<SubCategories[]> {
-      try{
-        return this.vendorStoreRepository.find({
-            select: ['subCategoryId', 'name']
-        });
-      }
-      catch(error){
-        console.error('Error in getting all sub-categories ', error.message);
-        throw new InternalServerErrorException('Error in getting all sub-categories');
-      }
-    }
-
-    // Get all SubCategories based on categoryId
-    async getSubCategories(categoryId: string): Promise<SubCategories[]>{
+    // get a vendor store by VendorId
+    async getVendorStore(vendorId: string): Promise<VendorStores[]>{
         try{
-            return this.vendorStoreRepository.find({
-                select: ['subCategoryId', 'name'],
-                where: {categoryId}
-            });
+            return await this.vendorStoreRepository.find({ where: {vendorId}});
         }catch(error){
-            console.error('Error in getting all sub-categories based on a CategoryId', error.message);
-            throw new InternalServerErrorException('Error in getting all sub-categories based on a categoryId');
+            console.error('Error in fetching a vendor store by vendorId', error.message);
+            throw new InternalServerErrorException('Error in fetching a vendor store by vendorId');
         }
     }
 }
