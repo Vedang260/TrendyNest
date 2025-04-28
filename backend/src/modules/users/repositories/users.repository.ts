@@ -5,7 +5,6 @@ import { User } from '../entities/users.entity';
 import { CreateUserDto } from '../dtos/createUser.dto';
 import { UserRole } from 'src/common/enums/roles.enums';
 
-
 @Injectable()
 export class UsersRepository{
     constructor(
