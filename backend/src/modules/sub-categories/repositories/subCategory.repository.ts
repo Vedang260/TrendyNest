@@ -2,67 +2,81 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SubCategories } from '../entities/subCategory.entity';
-import { CreateCategoryDto } from '../dtos/createCategory.dto';
-import { UpdateCategoryDto } from '../dtos/updateCategory.dto';
+import { CreateSubCategoryDto } from '../dtos/createSubCategory.dto';
+import { UpdateSubCategoryDto } from '../dtos/updateSubCategory.dto';
 
 @Injectable()
-export class CategoryRepository{
+export class SubCategoryRepository{
     constructor(
-        @InjectRepository(Categories)
-        private readonly categoryRepository: Repository<Categories>,
+        @InjectRepository(SubCategories)
+        private readonly subCategoryRepository: Repository<SubCategories>,
     ) {}        
 
     // finds the user by email
-    async findCategoryByName(name: string): Promise<Categories | null> {
+    async findSubCategoryByName(name: string): Promise<SubCategories | null> {
         try{
-            return this.categoryRepository.findOne({ where: { name } });
+            return this.subCategoryRepository.findOne({ where: { name } });
         }catch(error){
-            console.error('Error in finding category by name: ', error.message);
-            throw new InternalServerErrorException('Error in finding category by name');
+            console.error('Error in finding sub-category by name: ', error.message);
+            throw new InternalServerErrorException('Error in finding sub-category by name');
         }
     }
 
     // creates new category
-    async createCategory(createCategoryDto: CreateCategoryDto): Promise<Categories> {
+    async createSubCategory(createSubCategoryDto: CreateSubCategoryDto): Promise<SubCategories> {
         try{
-            const user = this.categoryRepository.create(createCategoryDto);
-            return this.categoryRepository.save(user);
+            const user = this.subCategoryRepository.create(createSubCategoryDto);
+            return this.subCategoryRepository.save(user);
         }catch(error){
-            console.error('Error in creating new category ', error.message);
-            throw new InternalServerErrorException('Error in creating new category');
+            console.error('Error in creating new sub-category ', error.message);
+            throw new InternalServerErrorException('Error in creating new sub-category');
         }
     }
 
     // deletes a category
-    async deleteCategory(categoryId: string): Promise<boolean> {
+    async deleteSubCategory(subCategoryId: string): Promise<boolean> {
         try{
-            const result = await this.categoryRepository.delete(categoryId);
+            const result = await this.subCategoryRepository.delete(subCategoryId);
             return result.affected ? result.affected > 0 : false;
         }catch(error){
-            console.error('Error in deleting a category ', error.message);
-            throw new InternalServerErrorException('Error in deleting a category');
+            console.error('Error in deleting a sub-category ', error.message);
+            throw new InternalServerErrorException('Error in deleting a sub-category');
         }
     }
 
-    async updateCategory(categoryId: string, updateCategoryDto: UpdateCategoryDto): Promise<boolean>{
+    async updateSubCategory(subCategoryId: string, updateSubCategoryDto: UpdateSubCategoryDto): Promise<boolean>{
         try{
-            const result = await this.categoryRepository.update({ categoryId}, updateCategoryDto);
+            const result = await this.subCategoryRepository.update({ subCategoryId}, updateSubCategoryDto);
             return result.affected ? result.affected > 0 : false;
         }catch(error){
-            console.error('Error in updating a category ', error.message);
-            throw new InternalServerErrorException('Error in updating a category');
+            console.error('Error in updating a sub-category ', error.message);
+            throw new InternalServerErrorException('Error in updating a sub-category');
         }
     }
 
-    // get all categories
-    async findAll(): Promise<Categories[]> {
+    // get all sub-categories
+    async findAll(): Promise<SubCategories[]> {
       try{
-        return this.categoryRepository.find({
-            select: ['categoryId', 'name']
+        return this.subCategoryRepository.find({
+            select: ['subCategoryId', 'name']
         });
       }
       catch(error){
-        throw error;
+        console.error('Error in getting all sub-categories ', error.message);
+        throw new InternalServerErrorException('Error in getting all sub-categories');
       }
+    }
+
+    // Get all SubCategories based on categoryId
+    async getSubCategories(categoryId: string): Promise<SubCategories[]>{
+        try{
+            return this.subCategoryRepository.find({
+                select: ['subCategoryId', 'name'],
+                where: {categoryId}
+            });
+        }catch(error){
+            console.error('Error in getting all sub-categories based on a CategoryId', error.message);
+            throw new InternalServerErrorException('Error in getting all sub-categories based on a categoryId');
+        }
     }
 }
