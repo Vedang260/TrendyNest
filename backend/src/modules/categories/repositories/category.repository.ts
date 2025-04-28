@@ -1,9 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Categories } from '../entities/category.entity';
 import { CreateCategoryDto } from '../dtos/createCategory.dto';
-import { UserRole } from 'src/common/enums/roles.enums';
 import { UpdateCategoryDto } from '../dtos/updateCategory.dto';
 
 @Injectable()
@@ -54,7 +53,7 @@ export class CategoryRepository{
             throw new InternalServerErrorException('Error in updating a category');
         }
     }
-    
+
     // get all categories
     async findAll(): Promise<Categories[]> {
       try{
