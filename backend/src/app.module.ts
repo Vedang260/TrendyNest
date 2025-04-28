@@ -6,6 +6,7 @@ import { typeOrmConfig } from './config/database.config';
 import { AuthMiddleware } from './modules/auth/middlewares/auth.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoryModule } from './modules/categories/module/category.module';
+import { SubCategoryModule } from './modules/sub-categories/module/subCategory.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { CategoryModule } from './modules/categories/module/category.module';
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
     UsersModule,
-    CategoryModule
+    CategoryModule,
+    SubCategoryModule
   ],
 })
 export class AppModule {
