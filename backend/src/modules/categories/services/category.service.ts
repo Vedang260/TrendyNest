@@ -5,7 +5,7 @@ import { CategoryRepository } from "../repositories/category.repository";
 import { UpdateCategoryDto } from "../dtos/updateCategory.dto";
 
 @Injectable()
-export class CommentsService{
+export class CategoryService{
     constructor(
         private readonly categoryRepository: CategoryRepository,
     ){}
