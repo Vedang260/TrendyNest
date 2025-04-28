@@ -1,5 +1,5 @@
 import { IsNotEmpty, MinLength, MaxLength, IsStrongPassword, IsString, IsEmail, IsEnum  } from 'class-validator';
-import { UserRole } from 'src/common/enums/roles.enum';
+import { UserRole } from 'src/common/enums/roles.enums';
 
 // register dto
 export class CreateUserDto {
