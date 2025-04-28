@@ -1,3 +1,7 @@
-import { CreateSubCategoryDto } from "./createSubCategory.dto";
+import { IsNotEmpty, IsString } from "class-validator";
 
-export class UpdateSubCategoryDto extends CreateSubCategoryDto {}
+export class UpdateSubCategoryDto{
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+}

@@ -12,11 +12,11 @@ import { UpdateSubCategoryDto } from '../dtos/updateSubCategory.dto';
 export class SubCategoryController {
   constructor(private readonly subCategoryService: SubCategoryService) {}
 
-  @Get(':id')
+  @Get(':categoryId')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  async findSubCtegoriesByCategory(@Param('id') id: string){
-    return this.subCategoryService.getSubCategoriesByCategory(id);
+  async findSubCtegoriesByCategory(@Param('categoryId') categoryId: string){
+    return this.subCategoryService.getSubCategoriesByCategory(categoryId);
   }
 
   @Get()
@@ -43,7 +43,7 @@ export class SubCategoryController {
   @Put(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  async updateSubCategory(@Param('id') id: string, @Body('subcategory') updateSubCategoryDto: UpdateSubCategoryDto){
+  async updateSubCategory(@Param('id') id: string, @Body('subCategory') updateSubCategoryDto: UpdateSubCategoryDto){
     return this.subCategoryService.updateSubCategory(id, updateSubCategoryDto);
   }
 } 
