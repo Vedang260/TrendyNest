@@ -3,6 +3,7 @@ import { Addresses } from "../entities/address.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateAddressDto } from "../dtos/createAddress.dto";
+import { UpdateAddressDto } from "../dtos/updateAddress.dto";
 
 @Injectable()
 export class AddressesRepository{
@@ -41,6 +42,14 @@ export class AddressesRepository{
         }
     }
 
-    async updateAddress(update)
+    async updateAddress(addressId: string, updateAddressDto: UpdateAddressDto): Promise<boolean>{
+        try{
+            const result = await this.addressRepository.update({ addressId}, updateAddressDto);
+            return result.affected ? result.affected > 0 : false;
+        }catch(error){
+            console.error('Error in updating Address: ', error.message);
+            throw new InternalServerErrorException('Error in updating Address');
+        }
+    }
 
 }
