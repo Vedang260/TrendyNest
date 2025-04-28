@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateVendorDto{
+export class CreateVendorStoreDto{
     @IsNotEmpty()
     @IsString()
     vendorId: string;
