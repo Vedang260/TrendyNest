@@ -4,4 +4,8 @@ export class CreateSubCategoryDto{
     @IsNotEmpty()
     @IsString()
     name: string;
+
+    @IsNotEmpty()
+    @IsString()
+    categoryId: string;
 }
