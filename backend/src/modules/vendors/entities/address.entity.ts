@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { VendorStores } from "./vendorStore.entity";
 
-@Entity({ name: 'address' })
-export class Address{
+@Entity({ name: 'addresses' })
+export class Addresses{
     @PrimaryGeneratedColumn('uuid')
     addressId: string;
 
@@ -20,6 +21,9 @@ export class Address{
     @Column()
     pincode: string;
 
+    @OneToMany(() => VendorStores, (store) => store.address)
+    vendorStores: VendorStores[];
+    
     @CreateDateColumn()
     createdAt: Date;
 

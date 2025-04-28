@@ -1,5 +1,6 @@
 import { UserRole } from "src/common/enums/roles.enums";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'users' })
 export class User{
@@ -18,6 +19,9 @@ export class User{
     @Column({ type: 'enum', enum: UserRole })
     role: UserRole;
 
+    @OneToMany(() => VendorStores, (store) => store.vendor)
+    vendorStores: VendorStores[];
+    
     @CreateDateColumn()
     createdAt: Date;
 
