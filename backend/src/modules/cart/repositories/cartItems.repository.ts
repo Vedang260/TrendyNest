@@ -12,7 +12,7 @@ export class CartItemsRepository{
     ) {}        
 
     // add new cart item
-    async addCartItem(createCartItemDto: CreateCartItemDto): Promise<CartItems> {
+    async addCartItem(createCartItemDto: Partial<CreateCartItemDto>): Promise<CartItems> {
         try{
             const cartItem = this.cartItemsRepository.create(createCartItemDto);
             return this.cartItemsRepository.save(cartItem);
