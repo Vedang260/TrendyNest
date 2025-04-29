@@ -1,8 +1,9 @@
 import { StoreStatus } from "src/common/enums/storeStatus.enums";
 import { User } from "src/modules/users/entities/users.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Addresses } from "./address.entity";
 import { Categories } from "src/modules/categories/entities/category.entity";
+import { Products } from "src/modules/products/entities/products.entity";
 
 @Entity({ name: 'vendor_stores' })
 export class VendorStores{
@@ -33,6 +34,9 @@ export class VendorStores{
     @JoinColumn({ name: 'categoryId' })
     category: Categories;
     
+    @OneToMany(() => Products, (product) => product.vendorStores)
+    products: Products[];
+
     @Column()
     store_name: string;
 
