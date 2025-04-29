@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoryModule } from './modules/categories/module/category.module';
 import { SubCategoryModule } from './modules/sub-categories/module/subCategory.module';
 import { VendorStoreModule } from './modules/vendors/module/vendorStore.module';
+import { UploadModule } from './utils/uploads/uploads.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { VendorStoreModule } from './modules/vendors/module/vendorStore.module';
     UsersModule,
     CategoryModule,
     SubCategoryModule,
-    VendorStoreModule
+    VendorStoreModule,
+    UploadModule
   ],
 })
 export class AppModule {
