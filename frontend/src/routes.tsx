@@ -1,8 +1,8 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import App from './App'
-// import ProtectedRoute from './components/common/ProtectedRoute'
 
+// import ProtectedRoute from './components/common/ProtectedRoute'
+ const App = lazy(() => import('./App'));
  const Home = lazy(() => import('./pages/Home'))
 // const Shop = lazy(() => import('./pages/Shop'))
 // const ProductDetails = lazy(() => import('./pages/ProductDetails'))
@@ -16,9 +16,8 @@ import App from './App'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    children: [
-      { index: true, element: <Home /> },
+    element: <Home />,
+ //   children: [
     //   { path: 'shop', element: <Shop /> },
     //   { path: 'product/:id', element: <ProductDetails /> },
     //   { path: 'cart', element: <Cart /> },
@@ -33,6 +32,6 @@ export const router = createBrowserRouter([
     //     path: 'vendor-dashboard', 
     //     element: <ProtectedRoute role="vendor"><VendorDashboard /></ProtectedRoute> 
     //   },
-    ],
+//    ],
   },
 ])
