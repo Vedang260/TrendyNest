@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { JSX, useEffect, useState } from 'react';
-import { FiChevronLeft, FiChevronRight, FiShoppingBag, FiHeart, FiSearch, FiUser } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiShoppingBag, FiHeart } from 'react-icons/fi';
 import { FaTshirt, FaLaptop, FaHome, FaBook, FaRunning } from 'react-icons/fa';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 // Define types for hero slides, categories, and products
 interface HeroSlide {
@@ -24,7 +26,7 @@ interface Product {
   image: string;
 }
 
-const TrendyNestHome: React.FC = () => {
+const Home: React.FC = () => {
   // Hero carousel state
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -94,44 +96,8 @@ const TrendyNestHome: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white font-sans">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg shadow-md">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent"
-          >
-            TrendyNest
-          </motion.div>
-
-          <div className="hidden md:flex space-x-10">
-            {['Home', 'Shop', 'Categories', 'About', 'Contact'].map((item) => (
-              <motion.a
-                key={item}
-                href="#"
-                whileHover={{ scale: 1.1, color: '#4F46E5' }}
-                className="text-gray-700 font-medium hover:text-indigo-600 transition-colors"
-              >
-                {item}
-              </motion.a>
-            ))}
-          </div>
-
-          <div className="flex items-center space-x-6">
-            {[<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiUser />].map((Icon, index) => (
-              <motion.button
-                key={index}
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                className="p-2 text-gray-700 hover:text-indigo-600 transition-colors text-2xl"
-              >
-                {Icon}
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </nav>
+      {/* Navbar */}
+      <Navbar />
 
       {/* Hero Carousel */}
       <div
@@ -323,14 +289,13 @@ const TrendyNestHome: React.FC = () => {
           >
             {/* Coupon Images */}
             <motion.img
-              src="./images/coupon-group-min.png"
+              src="https://images.unsplash.com/photo-1612347085956-7e0d0f5c58e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
               alt="Coupon"
               className="absolute top-0 left-0 w-24 md:w-32 transform -translate-x-8 -translate-y-8 rotate-12 opacity-80"
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               transition={{ duration: 0.5 }}
             />
-
             <motion.img
               src="https://images.unsplash.com/photo-1612347085956-7e0d0f5c58e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
               alt="Coupon"
@@ -368,57 +333,9 @@ const TrendyNestHome: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">TrendyNest</h3>
-              <p className="text-gray-400">Your one-stop shop for trendy and unique products.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-6">Shop</h4>
-              <ul className="space-y-3">
-                {['All Products', 'New Arrivals', 'Featured', 'Discounts'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-6">About</h4>
-              <ul className="space-y-3">
-                {['Our Story', 'Blog', 'Careers', 'Press'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-6">Contact</h4>
-              <ul className="space-y-3">
-                {['Help Center', 'Shipping', 'Returns', 'Size Guide'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>© {new Date().getFullYear()} TrendyNest. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
 
-export default TrendyNestHome;
+export default Home;
