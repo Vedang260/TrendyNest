@@ -1,52 +1,48 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { FiUser, FiMail, FiLock, FiTag } from 'react-icons/fi';
+import { FiMail, FiLock } from 'react-icons/fi';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { registerUser } from '../services/auth/api';
-import { RegisterData } from '../types/auth/register';
+import { loginUser } from '../services/auth/api';
+import { LoginData } from '../types/auth/login';
 import toast from 'react-hot-toast';
 
-const Register: React.FC = () => {
+const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
-  const initialValues: RegisterData = {
-    username: '',
+  const initialValues: LoginData = {
     email: '',
     password: '',
-    role: 'customer',
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().min(3, 'Username must be at least 3 characters').required('Required'),
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
-    role: Yup.string().oneOf(['vendor', 'customer'], 'Invalid role').required('Required'),
   });
 
-    const handleSubmit = async (
-        values: RegisterData, 
+  const handleSubmit = async (
+        values: LoginData, 
         formikHelpers: {
             setSubmitting: (isSubmitting: boolean) => void;
             resetForm: () => void;
         }
     ) => {
-            const { setSubmitting, resetForm } = formikHelpers;
-            try {
-                const response = await registerUser(values);
-                if(response.success){
-                    toast.success(response.message);
-                    resetForm(); 
-                }else{
-                    toast.error(response.message);
-                }
-            } catch (err: any) {
-                toast.error(err.message);
-            } finally {
-                setSubmitting(false);
+        const { setSubmitting, resetForm } = formikHelpers;
+        try {
+            const response = await loginUser(values);
+            if(response.success){
+                toast.success(response.message);
+                resetForm(); 
+            }else{
+                toast.error(response.message);
             }
+        } catch (err: any) {
+            toast.error(err.message);
+        } finally {
+            setSubmitting(false);
+        }
   };
 
   return (
@@ -59,30 +55,14 @@ const Register: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="bg-white/90 backdrop-blur-lg rounded-3xl p-8 md:p-12 w-full max-w-md shadow-2xl"
         >
-          <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">Join TrendyNest</h2>
+          <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">Login to TrendyNest</h2>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting}) => (
+            {({ isSubmitting }) => (
               <Form className="space-y-6">
-                <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                    Username
-                  </label>
-                  <div className="mt-1 relative">
-                    <FiUser className="absolute top-3 left-3 text-gray-400 text-lg" />
-                    <Field
-                      id="username"
-                      name="username"
-                      type="text"
-                      className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-600 focus:border-indigo-600"
-                      placeholder="Enter your username"
-                    />
-                    <ErrorMessage name="username" component="div" className="text-red-600 text-sm mt-1" />
-                  </div>
-                </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
@@ -115,30 +95,6 @@ const Register: React.FC = () => {
                     <ErrorMessage name="password" component="div" className="text-red-600 text-sm mt-1" />
                   </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Role</label>
-                  <div className="mt-2 flex space-x-4">
-                    <label className="flex items-center">
-                      <Field
-                        type="radio"
-                        name="role"
-                        value="customer"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-600"
-                      />
-                      <span className="ml-2 text-gray-700">Customer</span>
-                    </label>
-                    <label className="flex items-center">
-                      <Field
-                        type="radio"
-                        name="role"
-                        value="vendor"
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-600"
-                      />
-                      <span className="ml-2 text-gray-700">Vendor</span>
-                    </label>
-                  </div>
-                  <ErrorMessage name="role" component="div" className="text-red-600 text-sm mt-1" />
-                </div>
                 {error && <div className="text-red-600 text-sm text-center">{error}</div>}
                 <motion.button
                   type="submit"
@@ -147,15 +103,15 @@ const Register: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                   className="w-full py-3 bg-indigo-600 text-white rounded-full font-semibold text-lg shadow-xl hover:bg-indigo-700 transition-colors disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Registering...' : 'Register'}
+                  {isSubmitting ? 'Logging in...' : 'Login'}
                 </motion.button>
               </Form>
             )}
           </Formik>
           <p className="mt-6 text-center text-gray-600">
-            Already have an account?{' '}
-            <a href="/login" className="text-indigo-600 hover:underline">
-              Login
+            Don't have an account?{' '}
+            <a href="/register" className="text-indigo-600 hover:underline">
+              Register
             </a>
           </p>
         </motion.div>
@@ -165,4 +121,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default Login;

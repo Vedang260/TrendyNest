@@ -14,22 +14,17 @@ export const registerUser = async (data: RegisterData) => {
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Registration failed');
     }
-  };
+};
 
 export const loginUser = async (data: LoginData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
     });
-    if (!response.ok) {
-      throw new Error('Login failed');
-    }
-    return await response.json();
-  } catch (error) {
-    throw error;
+    return await response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Registration failed');
   }
 };
