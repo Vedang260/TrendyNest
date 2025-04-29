@@ -1,7 +1,8 @@
 import { ProductStatus } from "src/common/enums/productStatus.enums";
 import { SubCategories } from "src/modules/sub-categories/entities/subCategory.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProductStock } from "./productStock.entity";
 
 @Entity({ name: 'products' })
 export class Products{
@@ -46,6 +47,9 @@ export class Products{
     @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.PENDING})
     status: ProductStatus
 
+    @OneToOne(() => ProductStock, (stock) => stock.product)
+    productStock: ProductStock;
+    
     @CreateDateColumn()
     createdAt: Date;
 

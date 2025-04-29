@@ -1,47 +1,27 @@
-import { Column, CreateDateColumn } from "typeorm";
+import { ProductStockStatus } from "src/common/enums/productStockStatus.enums";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Products } from "./products.entity";
 
-@Entity({ name: 'products' })
-export class Products{
+@Entity({ name: 'products_stock' })
+export class ProductStock{
     @PrimaryGeneratedColumn('uuid')
-    productId: string;
+    productStockId: string;
 
     @Column('uuid')
-    subCategoryId: string;
+    productId: string;
 
+    @OneToOne(() => Products) 
+    @JoinColumn({ name: 'productId' }) 
+    product: Products
+    
     @Column('uuid')
     vendorStoreId: string;
 
-    @ManyToOne(() => SubCategories, (subCategory) => subCategory.products, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'subCategoryId' })
-    subCategory: SubCategories;
-    
-    @ManyToOne(() => VendorStores, (vendorStore) => vendorStore.products, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'vendorStoreId' })
-    vendorStores: VendorStores;
-
     @Column()
-    name: string;
+    stockQuantity: number;
 
-    @Column()
-    brand: string;
-
-    @Column()
-    price: number;
-    
-    @Column({ type: 'text' })
-    description: string;
-
-    @Column()
-    mainImage: string;
-
-    @Column({ nullable: true })
-    coverImages: string[];
-
-    @Column({ default: false})
-    bestseller: boolean;
-
-    @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.PENDING})
-    status: ProductStatus
+    @Column({ type: 'enum', enum: ProductStockStatus, default: ProductStockStatus.IN_STOCK })
+    availabilityStatus: ProductStockStatus
 
     @CreateDateColumn()
     createdAt: Date;
