@@ -21,9 +21,6 @@ export class CreateProductDto{
     price: number;
 
     @IsNotEmpty()
-    stockQuantity:number;
-
-    @IsNotEmpty()
     @IsString()
     description: string;
 

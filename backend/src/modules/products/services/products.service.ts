@@ -1,7 +1,10 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ProductsRepository } from "../repositories/products.repository";
 import { ProductStockRepository } from "../repositories/productStock.repository";
+import { CreateProductDto } from "../dtos/CreateProduct.dto";
 import { CreateProductStockDto } from "../dtos/createProductStock.dto";
+import { UpdateProductDto } from "../dtos/updateProduct.dto";
+import { Products } from "../entities/products.entity";
 
 @Injectable()
 export class ProductService{
@@ -10,52 +13,98 @@ export class ProductService{
         private readonly productStockRepository: ProductStockRepository,
     ) {}
 
-    async createProductStock(createProductStockDto: CreateProductStockDto): Promise<{ success: boolean; message: string;}>{
+    async createNewProduct(createProductDto: CreateProductDto, createProductStockDto: Partial<CreateProductStockDto>): Promise<{ success: boolean; message: string;}>{
         try{
-            // check if the address already exists
-            let address = await this.addressRepository.checkAddressExists(addressDto);
-
-            if(!address){
-                address = await this.addressRepository.addNewAddress(addressDto);
+            const newProduct = await this.productsRepository.createNewProduct(createProductDto);
+            if(!newProduct){
+               throw new Error('Failed to create a new product');
             }
-            if (!address) {
-                throw new Error('Failed to create or find address');
-            }
-            createVendorStoreDto.addressId = address?.addressId;
-
-            // Call your repository function with the new object
-            const newVendorStore = await this.vendorStoreRepository.createNewStore(createVendorStoreDto);
-
-            if(newVendorStore){
-                return {
-                    success: true,
-                    message: 'New Vendor Store is added successfully',
+            if(createProductStockDto.stockQuantity){
+                const createProductStock: CreateProductStockDto ={
+                    productId: newProduct.productId,
+                    stockQuantity: createProductStockDto?.stockQuantity
                 }
+                const newProductStock = await this.productStockRepository.createNewProductStock(createProductStock);
             }
-            
-            throw new Error('The store already exists');
+            return{
+                success: true,
+                message: 'New Product is created successfully'
+            }
         }catch(error){
-            console.error('Error in creating a new Vendor Store: ', error.message);
+            console.error('Error in creating a new Product: ', error.message);
             return {
                 success: false,
-                message: 'Failed to create a new vendor store',
+                message: 'Failed to create a new product',
             }
         }
     }
     
-    async updateVendorStore(vendorStoreId: string, updateVendorStoreDto: UpdateVendorStoreDto): Promise<{success: boolean; message: string;}>{
+    async updateProduct(productId: string, updateProductDto: UpdateProductDto): Promise<{success: boolean; message: string;}>{
         try{
-            await this.vendorStoreRepository.updateVendorStore(vendorStoreId, updateVendorStoreDto);
+            await this.productsRepository.updateProduct(productId, updateProductDto);
             return {
                 success: true,
-                message: 'Your vendor store is updated successfully'
+                message: 'Your product is updated successfully'
             }
         }catch(error){
-            console.error('Error in updating the vendor store: ', error.message);
+            console.error('Error in updating the product: ', error.message);
             return {
                 success: false,
                 message: error.message
             }
+        }
+    }
+    
+    async deleteProduct(productId: string): Promise<{success: boolean; message: string; }>{
+        try{
+            const res = await this.productsRepository.deleteProduct(productId);
+            if(res){
+                return {
+                    success: true,
+                    message: 'Product is deleted successfully'
+                }
+            }
+            return{
+                success: false,
+                message: 'Failed to delete product'
+            }
+        }catch(error){
+            console.error('Error in deleting a product: ', error.message);
+            return{
+                success: false,
+                message: error.message
+            }
+        }
+    }
+    
+    async getAllProducts(): Promise<{success: boolean; message: string; products: Products[] | null}> {
+        try{
+            const products = await this.productsRepository.getAllProducts();
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                products: products
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the products',
+                products: null
+            }
+        }
+    }
+    
+    async getProductsByVendorStore(vendorStoreId: string): Promise<{success: boolean; message: string; products: Products[] | null}> {
+        try{
+            const products = await this.productsRepository.getProductsByVendorStore(vendorStoreId);
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                products: products
+            }
+        }catch(error){
+            console.error('Error in fetching all products:', error.message);
+            throw new InternalServerErrorException('Error in fetching all products');
         }
     }
 }
