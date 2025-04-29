@@ -1,0 +1,69 @@
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Products } from '../entities/products.entity';
+import { CreateProductDto } from '../dtos/CreateProduct.dto';
+import { UpdateProductDto } from '../dtos/updateProduct.dto';
+
+@Injectable()
+export class ProductsRepository{
+    constructor(
+        @InjectRepository(Products)
+        private readonly productsRepository: Repository<Products>,
+    ) {}        
+
+    // creates new store
+    async createNewProduct(createProductDto: Partial<CreateProductDto>): Promise<Products> {
+        try{
+            const newProduct = this.productsRepository.create(createProductDto);
+            return this.productsRepository.save(newProduct);
+        }catch(error){
+            console.error('Error in creating new product ', error.message);
+            throw new InternalServerErrorException('Error in creating new product');
+        }
+    }
+
+    // deletes a product
+    async deleteProduct(productId: string): Promise<boolean> {
+        try{
+            const result = await this.productsRepository.delete(productId);
+            return result.affected ? result.affected > 0 : false;
+        }catch(error){
+            console.error('Error in deleting a product ', error.message);
+            throw new InternalServerErrorException('Error in deleting a product');
+        }
+    }
+
+    // update product
+    async updateProduct(productId: string, updateProductDto: UpdateProductDto): Promise<boolean>{
+        try{
+            const result = await this.productsRepository.update({ productId}, updateProductDto);
+            return result.affected ? result.affected > 0 : false;
+        }catch(error){
+            console.error('Error in updating a product', error.message);
+            throw new InternalServerErrorException('Error in updating a product');
+        }
+    }
+
+    // get all products by Vendor Store
+    async getProductsByVendorStore(vendorStoreId: string): Promise<Products[]>{
+        try{
+            return await this.productsRepository.find({ 
+                where: {vendorStoreId},
+                relations: ['product_stock']
+            });
+        }catch(error){
+            console.error('Error in fetching all products of vendor store', error.message);
+            throw new InternalServerErrorException('Error in fetching all products of vendor store');
+        }
+    }
+
+    async getAllProducts(): Promise<Products[]>{
+        try{
+            return await this.productsRepository.find();
+        }catch(error){
+            console.error('Error in fetching all products', error.message);
+            throw new InternalServerErrorException('Error in fetching all products');
+        }
+    }
+}
