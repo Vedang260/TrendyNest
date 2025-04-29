@@ -1,3 +1,4 @@
+import { ProductStatus } from "src/common/enums/productStatus.enums";
 import { UserRole } from "src/common/enums/roles.enums";
 import { SubCategories } from "src/modules/sub-categories/entities/subCategory.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
@@ -37,14 +38,15 @@ export class Products{
     @Column()
     mainImage: string;
 
-    @Column()
+    @Column({ nullable: true })
     coverImages: string[];
 
     @Column({ default: false})
     bestseller: boolean;
 
-    @Column()
-    status: 
+    @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.PENDING})
+    status: ProductStatus
+
     @CreateDateColumn()
     createdAt: Date;
 
