@@ -7,6 +7,7 @@ import { AuthMiddleware } from './modules/auth/middlewares/auth.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoryModule } from './modules/categories/module/category.module';
 import { SubCategoryModule } from './modules/sub-categories/module/subCategory.module';
+import { VendorStoreModule } from './modules/vendors/module/vendorStore.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { SubCategoryModule } from './modules/sub-categories/module/subCategory.m
     AuthModule,
     UsersModule,
     CategoryModule,
-    SubCategoryModule
+    SubCategoryModule,
+    VendorStoreModule
   ],
 })
 export class AppModule {
@@ -24,7 +26,9 @@ export class AppModule {
     .apply(AuthMiddleware)
     .forRoutes(
       { path: 'users', method: RequestMethod.ALL },
-      { path: 'categories', method: RequestMethod.ALL }
+      { path: 'categories', method: RequestMethod.ALL },
+      { path: 'sub-categories', method: RequestMethod.ALL },
+      { path: 'vendor-stores', method: RequestMethod.ALL },
     );
   }
 }
