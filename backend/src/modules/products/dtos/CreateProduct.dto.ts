@@ -22,12 +22,12 @@ export class CreateProductDto{
 
     @IsNotEmpty()
     stockQuantity:number;
-    
+
     @IsNotEmpty()
     @IsString()
     description: string;
 
     @IsNotEmpty()
     @IsString()
-    mainImage: string;
+    mainImage: string;  
 }
