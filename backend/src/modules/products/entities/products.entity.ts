@@ -1,5 +1,4 @@
 import { ProductStatus } from "src/common/enums/productStatus.enums";
-import { UserRole } from "src/common/enums/roles.enums";
 import { SubCategories } from "src/modules/sub-categories/entities/subCategory.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
