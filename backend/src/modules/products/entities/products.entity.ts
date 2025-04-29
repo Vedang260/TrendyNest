@@ -40,6 +40,11 @@ export class Products{
     @Column()
     coverImages: string[];
 
+    @Column({ default: false})
+    bestseller: boolean;
+
+    @Column()
+    status: 
     @CreateDateColumn()
     createdAt: Date;
 
