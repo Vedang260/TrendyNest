@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <Outlet /> {/* Renders child routes like Home, Register, etc. */}
     </div>
     </>

@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { registerUser } from '../services/auth/api';
 import { RegisterData } from '../types/auth/register';
+import toast from 'react-hot-toast';
 
 const Register: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -22,20 +23,30 @@ const Register: React.FC = () => {
     username: Yup.string().min(3, 'Username must be at least 3 characters').required('Required'),
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
-    role: Yup.string().oneOf(['Vendor', 'Customer'], 'Invalid role').required('Required'),
+    role: Yup.string().oneOf(['vendor', 'customer'], 'Invalid role').required('Required'),
   });
 
-  const handleSubmit = async (values: RegisterData, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
-    try {
-      await registerUser(values);
-      setError(null);
-      // Redirect or handle success (e.g., navigate to login)
-      console.log('Registration successful');
-    } catch (err: any) {
-      setError(err.message || 'Registration failed');
-    } finally {
-      setSubmitting(false);
-    }
+    const handleSubmit = async (
+        values: RegisterData, 
+        formikHelpers: {
+            setSubmitting: (isSubmitting: boolean) => void;
+            resetForm: () => void;
+        }
+    ) => {
+            const { setSubmitting, resetForm } = formikHelpers;
+            try {
+                const response = await registerUser(values);
+                if(response.success){
+                    toast.success(response.message);
+                    resetForm(); 
+                }else{
+                    toast.error(response.message);
+                }
+            } catch (err: any) {
+                toast.error(err.message);
+            } finally {
+                setSubmitting(false);
+            }
   };
 
   return (
@@ -54,7 +65,7 @@ const Register: React.FC = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, resetForm }) => (
               <Form className="space-y-6">
                 <div>
                   <label htmlFor="username" className="block text-sm font-medium text-gray-700">
@@ -111,7 +122,7 @@ const Register: React.FC = () => {
                       <Field
                         type="radio"
                         name="role"
-                        value="Customer"
+                        value="customer"
                         className="h-4 w-4 text-indigo-600 focus:ring-indigo-600"
                       />
                       <span className="ml-2 text-gray-700">Customer</span>
@@ -120,7 +131,7 @@ const Register: React.FC = () => {
                       <Field
                         type="radio"
                         name="role"
-                        value="Vendor"
+                        value="vendor"
                         className="h-4 w-4 text-indigo-600 focus:ring-indigo-600"
                       />
                       <span className="ml-2 text-gray-700">Vendor</span>
