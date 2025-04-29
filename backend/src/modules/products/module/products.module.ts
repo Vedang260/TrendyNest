@@ -6,6 +6,7 @@ import { ProductsRepository } from '../repositories/products.repository';
 import { ProductService } from '../services/products.service';
 import { ProductStock } from '../entities/productStock.entity';
 import { Products } from '../entities/products.entity';
+import { ProductStockRepository } from '../repositories/productStock.repository';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { Products } from '../entities/products.entity';
   providers: [
     ProductService,
     ProductsRepository,
+    ProductStockRepository
   ],
-  exports: [ProductService, ProductsRepository],
+  exports: [ProductService, ProductsRepository, ProductStockRepository],
 })
 export class ProductsModule {} 

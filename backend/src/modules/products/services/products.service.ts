@@ -77,7 +77,7 @@ export class ProductService{
         }
     }
     
-    async getAllProducts(): Promise<{success: boolean; message: string; products: Products[] | null}> {
+    async getAllProducts(): Promise<{success: boolean; message: string; products: any}> {
         try{
             const products = await this.productsRepository.getAllProducts();
             return {

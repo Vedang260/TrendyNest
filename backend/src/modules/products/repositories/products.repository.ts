@@ -58,9 +58,26 @@ export class ProductsRepository{
         }
     }
 
-    async getAllProducts(): Promise<Products[]>{
+    async getAllProducts(){
         try{
-            return await this.productsRepository.find();
+            const products = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'], 
+            });
+            return products.map((product) => ({
+                productId: product.productId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                status: product.status,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+                subCategoryName: product.subCategory?.name,
+                stockQuantity: product.productStock?.stockQuantity, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
         }catch(error){
             console.error('Error in fetching all products', error.message);
             throw new InternalServerErrorException('Error in fetching all products');

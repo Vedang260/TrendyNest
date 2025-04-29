@@ -13,9 +13,6 @@ export class ProductStock{
     @OneToOne(() => Products) 
     @JoinColumn({ name: 'productId' }) 
     product: Products
-    
-    @Column('uuid')
-    vendorStoreId: string;
 
     @Column()
     stockQuantity: number;
