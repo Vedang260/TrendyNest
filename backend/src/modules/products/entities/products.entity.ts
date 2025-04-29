@@ -38,9 +38,6 @@ export class Products{
     @Column()
     mainImage: string;
 
-    @Column({ nullable: true })
-    coverImages: string[];
-
     @Column({ default: false})
     bestseller: boolean;
 
