@@ -85,7 +85,11 @@ export class SubCategoryService{
             }
         }catch(error){
             console.error('Error in fetching all sub categories:', error.message);
-            throw new InternalServerErrorException('Error in fetching all sub categories');
+            return {
+                success: false,
+                message: 'Failed to fetch All Sub Categories',
+                subCategories: null
+            }
         }
     }
 
@@ -99,7 +103,11 @@ export class SubCategoryService{
             }
         }catch(error){
             console.error('Error in fetching all sub categories:', error.message);
-            throw new InternalServerErrorException('Error in fetching all sub categories');
+            return {
+                success: false,
+                message: 'Failed to fetch all Sub Categories',
+                subCategories: null
+            }
         }
     }
 }

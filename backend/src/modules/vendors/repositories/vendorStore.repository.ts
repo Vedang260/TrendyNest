@@ -13,7 +13,7 @@ export class VendorStoreRepository{
     ) {}        
 
     // creates new store
-    async createNewStore(createVendorStoreDto: CreateVendorStoreDto): Promise<VendorStores> {
+    async createNewStore(createVendorStoreDto: Partial<CreateVendorStoreDto>): Promise<VendorStores> {
         try{
             const newVendorStore = this.vendorStoreRepository.create(createVendorStoreDto);
             return this.vendorStoreRepository.save(newVendorStore);
@@ -52,6 +52,15 @@ export class VendorStoreRepository{
         }catch(error){
             console.error('Error in fetching a vendor store by vendorId', error.message);
             throw new InternalServerErrorException('Error in fetching a vendor store by vendorId');
+        }
+    }
+
+    async getAllVendorStores(): Promise<VendorStores[]>{
+        try{
+            return await this.vendorStoreRepository.find();
+        }catch(error){
+            console.error('Error in fetching all vendor stores', error.message);
+            throw new InternalServerErrorException('Error in fetching all vendor stores');
         }
     }
 }
