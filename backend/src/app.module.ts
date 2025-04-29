@@ -10,6 +10,7 @@ import { SubCategoryModule } from './modules/sub-categories/module/subCategory.m
 import { VendorStoreModule } from './modules/vendors/module/vendorStore.module';
 import { UploadModule } from './utils/uploads/uploads.module';
 import { ProductsModule } from './modules/products/module/products.module';
+import { CartItemsModule } from './modules/cart/modules/cartItems.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { ProductsModule } from './modules/products/module/products.module';
     SubCategoryModule,
     VendorStoreModule,
     ProductsModule,
-    UploadModule
+    CartItemsModule,
+    UploadModule,
   ],
 })
 export class AppModule {
@@ -33,7 +35,8 @@ export class AppModule {
       { path: 'categories', method: RequestMethod.ALL },
       { path: 'sub-categories', method: RequestMethod.ALL },
       { path: 'vendor-stores', method: RequestMethod.ALL },
-      { path: 'products', method: RequestMethod.ALL }
+      { path: 'products', method: RequestMethod.ALL },
+      { path: 'cart-items', method: RequestMethod.ALL }
     );
   }
 }
