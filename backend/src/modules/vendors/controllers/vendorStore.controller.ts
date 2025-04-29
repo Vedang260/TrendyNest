@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, UseGuards, ParseIntPipe, Post, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Delete, UseGuards, ParseIntPipe, Post, Put, Body, Req } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards/jwt_auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
@@ -13,11 +13,11 @@ import { UpdateVendorStoreDto } from '../dtos/updateVendorStore.dto';
 export class VendorStoreController {
   constructor(private readonly vendorStoreService: VendorStoreService) {}
 
-  @Get(':vendorId')
+  @Get('/vendorId')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.VENDOR)
-  async getVendorStoresByVendorId(@Param('vendorId') vendorId: string){
-    return this.vendorStoreService.getVendorStoreByVendorId(vendorId);
+  async getVendorStoresByVendorId(@Req() req: Request){
+    return this.vendorStoreService.getVendorStoreByVendorId(req['user'].userId);
   }
 
   @Get()
@@ -37,7 +37,8 @@ export class VendorStoreController {
   @Post('create')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.VENDOR)
-  async createVendorStore(@Body('vendorStore') createVendorStoreDto: Partial<CreateVendorStoreDto>, @Body('address') addressDto: CreateAddressDto){
+  async createVendorStore(@Req() req: Request,@Body('vendorStore') createVendorStoreDto: Partial<CreateVendorStoreDto>, @Body('address') addressDto: CreateAddressDto){
+    createVendorStoreDto.vendorId = req['user'].userId;
     return this.vendorStoreService.createVendorStore(createVendorStoreDto, addressDto);
   }
 
