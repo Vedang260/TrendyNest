@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ProductsRepository } from "../repositories/products.repository";
 import { ProductStockRepository } from "../repositories/productStock.repository";
+import { CreateProductStockDto } from "../dtos/createProductStock.dto";
 
 @Injectable()
 export class ProductService{
@@ -9,7 +10,7 @@ export class ProductService{
         private readonly productStockRepository: ProductStockRepository,
     ) {}
 
-    async createProductStock(createVendorStoreDto: Partial<CreateVendorStoreDto>, addressDto: CreateAddressDto): Promise<{ success: boolean; message: string;}>{
+    async createProductStock(createProductStockDto: CreateProductStockDto): Promise<{ success: boolean; message: string;}>{
         try{
             // check if the address already exists
             let address = await this.addressRepository.checkAddressExists(addressDto);
