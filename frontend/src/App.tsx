@@ -1,15 +1,14 @@
-import { useState } from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './routes'
-import { Suspense } from 'react'
+import { Outlet} from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 function App() {
 
   return (
     <>
-      <h1>App Layout</h1>
+      <div>
       <Toaster position="top-center" />
+      <Outlet /> {/* Renders child routes like Home, Register, etc. */}
+    </div>
     </>
   )
 }
