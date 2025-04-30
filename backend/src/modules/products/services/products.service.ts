@@ -93,6 +93,57 @@ export class ProductService{
             }
         }
     }
+
+    async getApprovedProductsForAdmin(): Promise<{success: boolean; message: string; products: any}> {
+        try{
+            const products = await this.productsRepository.getAllApprovedProductsForAdmin();
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                products: products
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the products',
+                products: null
+            }
+        }
+    }
+
+    async getPendingProductsForAdmin(): Promise<{success: boolean; message: string; products: any}> {
+        try{
+            const products = await this.productsRepository.getAllPendingProductsForAdmin();
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                products: products
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the products',
+                products: null
+            }
+        }
+    }
+    
+    async getRejectedProductsForAdmin(): Promise<{success: boolean; message: string; products: any}> {
+        try{
+            const products = await this.productsRepository.getAllRejectedProductsForAdmin();
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                products: products
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the products',
+                products: null
+            }
+        }
+    }
     
     async getProductsByVendorStore(vendorStoreId: string): Promise<{success: boolean; message: string; products: Products[] | null}> {
         try{

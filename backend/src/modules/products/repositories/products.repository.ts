@@ -109,4 +109,91 @@ export class ProductsRepository{
             throw new InternalServerErrorException('Error in fetching all products for the customers');       
         }
     }
+
+    async getAllApprovedProductsForAdmin(){
+        try{
+            const products = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'], 
+                where: { status: ProductStatus.APPROVED},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return products.map((product) => ({
+                productId: product.productId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+                subCategoryName: product.subCategory?.name,
+                stockQuantity: product.productStock?.stockQuantity, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
+        }catch(error){
+            console.error('Error in fetching all approved products for Admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all approved products for Admin');
+        }
+    }
+
+    async getAllRejectedProductsForAdmin(){
+        try{
+            const products = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'], 
+                where: { status: ProductStatus.REJECTED},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return products.map((product) => ({
+                productId: product.productId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+                subCategoryName: product.subCategory?.name,
+                stockQuantity: product.productStock?.stockQuantity, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
+        }catch(error){
+            console.error('Error in fetching all approved products for Admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all approved products for Admin');
+        }
+    }
+
+    async getAllPendingProductsForAdmin(){
+        try{
+            const products = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'], 
+                where: { status: ProductStatus.PENDING},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return products.map((product) => ({
+                productId: product.productId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                createdAt: product.createdAt,
+                updatedAt: product.updatedAt,
+                subCategoryName: product.subCategory?.name,
+                stockQuantity: product.productStock?.stockQuantity, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
+        }catch(error){
+            console.error('Error in fetching all approved products for Admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all approved products for Admin');
+        }
+    }
 }

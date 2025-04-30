@@ -38,6 +38,27 @@ export class ProductsController {
     return this.productService.getProductsByVendorStore(id);
   }
 
+  @Get('/approved')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
+  async getApprovedProductsForAdmin(){
+    return this.productService.getApprovedProductsForAdmin();
+  }
+
+  @Get('/pending')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
+  async getPendingProductsForAdmin(){
+    return this.productService.getPendingProductsForAdmin();
+  }
+
+  @Get('/rejected')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
+  async getRejectedProductsForAdmin(){
+    return this.productService.getRejectedProductsForAdmin();
+  }
+  
   @Get()
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
