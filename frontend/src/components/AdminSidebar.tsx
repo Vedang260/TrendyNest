@@ -11,7 +11,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onCollapseChange }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
 
-  const menuItems = [
+  const adminMenuItems = [
     { name: 'Users', icon: <FiUsers />, path: '/admin/users' },
     { name: 'Vendors', icon: <FiShoppingBag />, path: '/admin/vendors' },
     { name: 'Products', icon: <FiBox />, path: '/admin/products' },
@@ -60,7 +60,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onCollapseChange }) => {
 
       {/* Menu Items */}
       <nav className="flex-1 mt-4 overflow-y-auto">
-        {menuItems.map((item) => (
+        {adminMenuItems.map((item) => (
           <NavLink
             key={item.name}
             to={item.path}
