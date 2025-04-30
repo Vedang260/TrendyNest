@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Products } from '../entities/products.entity';
 import { CreateProductDto } from '../dtos/CreateProduct.dto';
 import { UpdateProductDto } from '../dtos/updateProduct.dto';
+import { ProductStatus } from 'src/common/enums/productStatus.enums';
 
 @Injectable()
 export class ProductsRepository{
@@ -65,6 +66,7 @@ export class ProductsRepository{
             });
             return products.map((product) => ({
                 productId: product.productId,
+                subCategoryId: product.subCategoryId,
                 name: product.name,
                 brand: product.brand,
                 price: product.price,
@@ -81,6 +83,30 @@ export class ProductsRepository{
         }catch(error){
             console.error('Error in fetching all products', error.message);
             throw new InternalServerErrorException('Error in fetching all products');
+        }
+    }
+
+    async getAllProductsForCustomers(){
+        try{
+            const products = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'],
+                where: {status: ProductStatus.APPROVED} 
+            });
+            return products.map((product) => ({
+                productId: product.productId,
+                subCategoryId: product.subCategoryId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                subCategoryName: product.subCategory?.name, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
+        }catch(error){
+            console.error('Error in fetching all products for the customers', error.message);
+            throw new InternalServerErrorException('Error in fetching all products for the customers');       
         }
     }
 }

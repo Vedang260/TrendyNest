@@ -26,6 +26,11 @@ export class ProductsController {
       return await this.uploadService.uploadFile(file);
   }
 
+  @Get('/customers')
+  async getProductsForCustomers(){
+    return this.productService.getAllProductsForCustomers();
+  }
+
   @Get('/:vendorStoreId')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.VENDOR)

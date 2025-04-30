@@ -107,4 +107,22 @@ export class ProductService{
             throw new InternalServerErrorException('Error in fetching all products');
         }
     }
+
+    async getAllProductsForCustomers(): Promise<{success: boolean; message: string; products: any}>{
+        try{
+            const products = await this.productsRepository.getAllProductsForCustomers();
+            return{
+                success: true,
+                message: 'Start Shopping',
+                products: products
+            } 
+        }catch(error){
+            console.error('Error in fetching the products for the customers: ', error.message);
+            return{
+                success: false,
+                message: 'Failed to fetch All the products',
+                products: null
+            }
+        }
+    }
 }
