@@ -28,7 +28,7 @@ export class CartItemsController {
   @Post('add')
   @UseGuards(RolesGuard)
   @Roles(UserRole.CUSTOMER)
-  async addCartItem(@Body('cartItem') createCartItemDto: CreateCartItemDto, @Req() req: Request){
+  async addCartItem(@Body('cartItem') createCartItemDto: Partial<CreateCartItemDto>, @Req() req: Request){
     return this.cartItemsService.addCartItem(req['user'].userId, createCartItemDto);
   }
 
