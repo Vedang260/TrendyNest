@@ -8,9 +8,13 @@ import Footer from '../components/Footer';
 import { loginUser } from '../services/auth/api';
 import { LoginData } from '../types/auth/login';
 import toast from 'react-hot-toast';
+import { useAppDispatch } from '../redux/hooks/hooks';
+import { login } from '../redux/slices/auth.slice';
+import { LoginResponse } from '../types/auth/auth';
 
 const Login: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   const initialValues: LoginData = {
     email: '',
@@ -31,8 +35,9 @@ const Login: React.FC = () => {
     ) => {
         const { setSubmitting, resetForm } = formikHelpers;
         try {
-            const response = await loginUser(values);
+            const response: LoginResponse = await loginUser(values);
             if(response.success){
+                dispatch(login(response));
                 toast.success(response.message);
                 resetForm(); 
             }else{
