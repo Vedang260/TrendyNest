@@ -11,6 +11,7 @@ import { VendorStoreModule } from './modules/vendors/module/vendorStore.module';
 import { UploadModule } from './utils/uploads/uploads.module';
 import { ProductsModule } from './modules/products/module/products.module';
 import { CartItemsModule } from './modules/cart/modules/cartItems.module';
+import { DashboardModule } from './modules/dashboard/modules/dashboard.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CartItemsModule } from './modules/cart/modules/cartItems.module';
     VendorStoreModule,
     ProductsModule,
     CartItemsModule,
+    DashboardModule,
     UploadModule,
   ],
 })
@@ -36,7 +38,8 @@ export class AppModule {
       { path: 'sub-categories', method: RequestMethod.ALL },
       { path: 'vendor-stores', method: RequestMethod.ALL },
       { path: 'products', method: RequestMethod.ALL },
-      { path: 'cart-items', method: RequestMethod.ALL }
+      { path: 'cart-items', method: RequestMethod.ALL },
+      { path: 'dashboard', method: RequestMethod.ALL }
     );
   }
 }
