@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { FiSearch, FiHeart, FiShoppingBag, FiUser } from 'react-icons/fi';
+import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiBell } from 'react-icons/fi';
 
 const Navbar: React.FC = () => {
   const navItems = ['Home', 'Shop', 'Categories', 'About', 'Contact'];
-  const icons = [<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiUser />];
+  const icons = [<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiBell/>, <FiUser />];
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg shadow-md">
