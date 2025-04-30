@@ -38,21 +38,21 @@ export class ProductsController {
     return this.productService.getProductsByVendorStore(id);
   }
 
-  @Get('/approved')
+  @Get('/admin/approved')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
   async getApprovedProductsForAdmin(){
     return this.productService.getApprovedProductsForAdmin();
   }
 
-  @Get('/pending')
+  @Get('/admin/pending')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
   async getPendingProductsForAdmin(){
     return this.productService.getPendingProductsForAdmin();
   }
 
-  @Get('/rejected')
+  @Get('/admin/rejected')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
   async getRejectedProductsForAdmin(){
