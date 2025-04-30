@@ -4,7 +4,6 @@ import { useAppSelector} from '../../redux/hooks/hooks';
 
 export const fetchAdminDashboardData = async (token: string) => {
     try {
- 
       const response = await axios.get(`${API_BASE_URL}/dashboard/admin`, {
         headers: {
             'Authorization': `Bearer ${token}`, 
