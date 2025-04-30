@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { useAppDispatch } from '../redux/hooks/hooks';
 import { login } from '../redux/slices/auth.slice';
 import { LoginResponse } from '../types/auth/auth';
+import { useNavigate} from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [error] = useState<string | null>(null);
@@ -26,6 +27,7 @@ const Login: React.FC = () => {
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
   });
 
+  const navigate = useNavigate();
   const handleSubmit = async (
         values: LoginData, 
         formikHelpers: {
@@ -40,6 +42,8 @@ const Login: React.FC = () => {
                 dispatch(login(response));
                 toast.success(response.message);
                 resetForm(); 
+                if(response.user.role === 'admin')
+                  navigate('/admin');
             }else{
                 toast.error(response.message);
             }
