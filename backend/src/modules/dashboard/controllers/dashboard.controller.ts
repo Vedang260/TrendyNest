@@ -5,7 +5,7 @@ import { Roles } from '../../../common/decorators/roles.decorator';
 import { UserRole } from '../../../common/enums/roles.enums';
 import { DashboardService } from '../services/dashboard.service';
 
-@Controller('sub-categories')
+@Controller('dashboard')
 @UseGuards(JwtAuthGuard)
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}

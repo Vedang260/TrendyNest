@@ -22,7 +22,7 @@ export class DashboardRepository{
                     (SELECT COUNT(*) FROM products) AS "totalProducts",
                     (SELECT COUNT(*) FROM products WHERE status = 'pending') AS "totalPendingProducts",
                     (SELECT COUNT(*) FROM products WHERE status = 'approved') AS "totalApprovedProducts",
-                    (SELECT COUNT(*) FROM products WHERE status = 'rejected') AS "totalRejectedProducts",
+                    (SELECT COUNT(*) FROM products WHERE status = 'rejected') AS "totalRejectedProducts"
             `);
 
             const stats = result[0];
