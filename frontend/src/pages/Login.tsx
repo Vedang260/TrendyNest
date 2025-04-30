@@ -44,6 +44,8 @@ const Login: React.FC = () => {
                 resetForm(); 
                 if(response.user.role === 'admin')
                   navigate('/admin');
+                if(response.user.role === 'customer')
+                  navigate('/');
             }else{
                 toast.error(response.message);
             }
