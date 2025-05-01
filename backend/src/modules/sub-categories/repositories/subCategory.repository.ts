@@ -57,9 +57,7 @@ export class SubCategoryRepository{
     // get all sub-categories
     async findAll(): Promise<SubCategories[]> {
       try{
-        return this.subCategoryRepository.find({
-            select: ['subCategoryId', 'name']
-        });
+        return this.subCategoryRepository.find();
       }
       catch(error){
         console.error('Error in getting all sub-categories ', error.message);

@@ -57,12 +57,11 @@ export class CategoryRepository{
     // get all categories
     async findAll(): Promise<Categories[]> {
       try{
-        return this.categoryRepository.find({
-            select: ['categoryId', 'name']
-        });
+        return this.categoryRepository.find();
       }
       catch(error){
-        throw error;
+        console.error('Error in fetching all the Categories', error.message);
+        throw new InternalServerErrorException('Error in fetching all the Categories');
       }
     }
 }
