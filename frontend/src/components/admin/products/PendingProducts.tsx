@@ -19,22 +19,23 @@ const PendingProducts: React.FC = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const limit = 10; // Products per page
 
+  const loadProducts = async () => {
+    try {
+      const response: AdminProductsResponse = await fetchAdminPendingProducts(token);
+      if (response.success) {
+        setProducts(response.products);
+        setError(null);
+      } else {
+        setError(response.message);
+      }
+    } catch (err: any) {
+      setError(err.message);
+      toast.error(err.message);
+    }
+  };
+
   // Fetch pending products
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const response: AdminProductsResponse = await fetchAdminPendingProducts(token);
-        if (response.success) {
-          setProducts(response.products);
-          setError(null);
-        } else {
-          setError(response.message);
-        }
-      } catch (err: any) {
-        setError(err.message);
-        toast.error(err.message);
-      }
-    };
     if (token) {
       loadProducts();
     }
@@ -57,6 +58,7 @@ const PendingProducts: React.FC = () => {
       const response = await approveProduct(productId, token);
       if (response.success) {
         toast.success(response.message);
+        loadProducts();
       } else {
         toast.error(response.message);
       }
@@ -70,8 +72,8 @@ const PendingProducts: React.FC = () => {
     try {
       const response = await rejectProduct(productId, token);
       if (response.success) {
-        setProducts(products.filter((p) => p.productId !== productId));
         toast.success(response.message);
+        loadProducts();
       } else {
         toast.error(response.message);
       }
@@ -258,44 +260,61 @@ const PendingProducts: React.FC = () => {
                             <FiX className="text-2xl" />
                           </motion.button>
                         </div>
-                        <div className="space-y-3 flex-1">
-                          <p>
-                            <span className="font-semibold text-indigo-600">Brand: </span>
-                            <span className="text-gray-800">{selectedProduct.brand}</span>
-                          </p>
-                          <p>
-                            <span className="font-semibold text-indigo-600">Description: </span>
-                            <span className="text-gray-700">{selectedProduct.description}</span>
-                          </p>
-                          <p>
-                            <span className="font-semibold text-indigo-600">Price: </span>
-                            <span className="text-green-600 font-bold">
-                              ${selectedProduct.price.toFixed(2)}
-                            </span>
-                          </p>
-                          <p>
-                            <span className="font-semibold text-indigo-600">Created At: </span>
-                            <span className="text-gray-700">
-                              {new Date(selectedProduct.createdAt).toLocaleDateString()}
-                            </span>
-                          </p>
-                          <p>
-                            <span className="font-semibold text-indigo-600">Updated At: </span>
-                            <span className="text-gray-700">
-                              {new Date(selectedProduct.updatedAt).toLocaleDateString()}
-                            </span>
-                          </p>
-                          <p>
-                            <span className="font-semibold text-indigo-600">Stock Quantity: </span>
-                            <span className="text-yellow-600 font-bold">
-                              {selectedProduct.stockQuantity}
-                            </span>
-                          </p>
-                          <p>
+                        <div className="space-y-3 flex-1 text-sm sm:text-base">
+                        <p>
                             <span className="font-semibold text-indigo-600">Sub-Category: </span>
-                            <span className="text-pink-500">{selectedProduct.subCategoryName}</span>
-                          </p>
+                            <span className="text-pink-600  bg-pink-100 px-2 py-1 rounded-md inline-block">{selectedProduct.subCategoryName}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold text-indigo-600">Brand: </span>
+                            <span className="text-blue-800 bg-blue-100 px-2 py-1 rounded-md inline-block">{selectedProduct.brand}</span>
+                        </p>
+                        <p>
+                            <span className="font-semibold text-indigo-600">Description: </span>
+                            <span className="text-gray-600">{selectedProduct.description}</span>
+                        </p>
+                        <p>
+                        <span className="font-semibold text-indigo-600">Price: </span>
+                        <span className="text-green-800 font-semibold bg-green-200 px-2 py-1 rounded-md inline-block">
+                            ₹ {selectedProduct.price.toFixed(2)}
+                        </span>
+                        </p>
+                        <div className="flex flex-wrap gap-8">
+                        <p className="flex items-center gap-1">
+                            <span className="font-semibold text-indigo-600">Stock Quantity:</span>
+                            <span className="text-yellow-950  bg-yellow-200 px-2 py-1 rounded-md inline-block">
+                            {selectedProduct.stockQuantity}
+                            </span>
+                        </p>
+                        <p className="flex items-center gap-2">
+                        <span
+                            className={`px-3 py-1 rounded-full text-sm font-semibold
+                            ${selectedProduct.availabilityStatus === 'in_stock'
+                                ? 'bg-green-200 text-green-800'
+                                : 'bg-red-200 text-red-800'
+                            }`}
+                        >
+                            {selectedProduct.availabilityStatus === 'in_stock' ? '⚡IN STOCK' : '⚠️ OUT OF STOCK'}
+                        </span>
+                        </p>
+
                         </div>
+                        <div className="flex flex-wrap gap-8">
+                        <p className="flex items-center gap-1">
+                            <span className="font-semibold text-indigo-600">Created At:</span>
+                            <span className="text-purple-700  bg-purple-100 px-2 py-1 rounded-md inline-block">
+                            {new Date(selectedProduct.createdAt).toLocaleDateString()}
+                            </span>
+                        </p>
+                        <p className="flex items-center gap-1">
+                            <span className="font-semibold text-indigo-600">Updated At:</span>
+                            <span className="text-purple-500  bg-purple-100 px-2 py-1 rounded-md inline-block">
+                            {new Date(selectedProduct.updatedAt).toLocaleDateString()}
+                            </span>
+                        </p>
+                        </div>
+                    </div>
+
                         <div className="mt-6 flex space-x-4">
                           <motion.button
                             whileHover={{ scale: 1.05 }}
