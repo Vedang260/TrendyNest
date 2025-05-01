@@ -11,11 +11,11 @@ import { CreateCartItemDto } from '../dtos/createCartItem.dto';
 export class CartItemsController {
   constructor(private readonly cartItemsService: CartItemsService) {}
 
-  @Get(':id')
+  @Get()
   @UseGuards(RolesGuard)
   @Roles(UserRole.CUSTOMER)
-  async findAll(@Param('id') id: string){
-    return this.cartItemsService.getAllCartItems(id);
+  async findAll(@Req() req: Request){
+    return this.cartItemsService.getAllCartItems(req['user'].userId);
   }
 
   @Delete(':id')

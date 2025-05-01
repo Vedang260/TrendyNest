@@ -85,14 +85,22 @@ export class CartItemsService{
         }
     }
 
-    async getAllCartItems(cartId: string): Promise<{success: boolean; message: string; cartItems: CartItems[] | null}> {
+    async getAllCartItems(customerId: string): Promise<{success: boolean; message: string; cartItems: any[] | null}> {
         try{
-            const cartItems = await this.cartItemsRepository.getAllCartItems(cartId);
-            return {
-                success: true,
-                message: 'All Cart-Items are fetched successfully',
-                cartItems: cartItems
-            }
+                const cart = await this.cartRepository.checkCartExists(customerId);
+                if(cart){
+                    const cartItems = await this.cartItemsRepository.getAllCartItems(cart?.cartId);
+                    return {
+                        success: true,
+                        message: 'All Cart-Items are fetched successfully',
+                        cartItems: cartItems
+                    }
+                }
+                return{
+                    success: true,
+                    message: 'Plz add items into the Cart',
+                    cartItems: null
+                }
         }catch(error){
             console.error('Error in fetching all cartItems:', error.message);
             return {

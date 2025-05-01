@@ -45,13 +45,29 @@ export class CartItemsRepository{
     }
 
     // get all cart-items
-    async getAllCartItems(cartId: string): Promise<CartItems[]> {
-      try{
-        return this.cartItemsRepository.find({where: {cartId}});
+    async getAllCartItems(cartId: string): Promise<any[]> {
+        try {
+          const cartItems = await this.cartItemsRepository
+            .createQueryBuilder('cart_items')
+            .leftJoinAndSelect('cart_items.product', 'product')
+            .leftJoinAndSelect('product.subCategory', 'subCategory')
+            .where('cart_items.cartId = :cartId', { cartId })
+            .select([
+              'cart_items.cartItemsId',
+              'cart_items.quantity',
+              'product.productId',
+              'product.name',
+              'product.mainImage',
+              'product.price',
+              'subCategory.name',
+            ])
+            .getMany();
+      
+          return cartItems;
+        } catch (error) {
+          console.error('❌ Error in getting all cart-items:', error.message);
+          throw new InternalServerErrorException('Error in getting all cart-items');
+        }
       }
-      catch(error){
-        console.error('Error in getting all cart-Items ', error.message);
-        throw new InternalServerErrorException('Error in getting all cart-items');
-      }
-    }
+      
 }
