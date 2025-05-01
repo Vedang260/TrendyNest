@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiBell, FiLogOut } from 'react-icons/fi';
+import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiBell, FiLogOut, FiShoppingCart } from 'react-icons/fi';
 import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../redux/hooks/hooks';
 import { logout } from '../redux/slices/auth.slice';
@@ -7,7 +7,7 @@ import CategoriesDropdown from './CategoriesDropdown';
 
 const Navbar: React.FC = () => {
   const navItems = ['Home', 'Shop', 'Categories', 'About', 'Contact'];
-  const icons = [<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiBell />];
+  const icons = [<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiShoppingCart />, <FiBell />];
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
