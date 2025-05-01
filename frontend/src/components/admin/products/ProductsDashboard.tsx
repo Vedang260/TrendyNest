@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import AdminSidebar from '../components/AdminSidebar';
-import { fetchAdminDashboardData } from '../services/dashboard/api';
+import AdminSidebar from '../../../components/AdminSidebar';
+import { fetchAdminDashboardData } from '../../../services/dashboard/api';
 import toast from 'react-hot-toast';
-import { AdminDashboardData } from '../types/dashboard/adminDashboard';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { useAppSelector } from '../redux/hooks/hooks';
-import { Outlet } from 'react-router-dom';
+import { AdminDashboardData } from '../../../types/dashboard/adminDashboard';
+import Navbar from '../../../components/Navbar';
+import Footer from '../../../components/Footer';
+import { useAppSelector } from '../../../redux/hooks/hooks';
 
 const Counter: React.FC<{ end: number; duration: number }> = ({ end, duration }) => {
   const [count, setCount] = useState(0);
@@ -29,7 +28,7 @@ const Counter: React.FC<{ end: number; duration: number }> = ({ end, duration })
   return <span>{count}</span>;
 };
 
-const AdminDashboard: React.FC = () => {
+const ProductsDashboard: React.FC = () => {
   const [data, setData] = useState<AdminDashboardData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -134,8 +133,7 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <>
-      <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
+    <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
       <Navbar />
       <div className="flex flex-col min-h-screen">
         <div className="flex flex-1">
@@ -188,9 +186,7 @@ const AdminDashboard: React.FC = () => {
         <Footer />
       </div>
     </div>
-    <Outlet/>
-    </>
   );
 };
 
-export default AdminDashboard;
+export default ProductsDashboard;

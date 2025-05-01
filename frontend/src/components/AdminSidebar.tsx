@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef, JSX } from 'react';
 import { FiMenu, FiUsers, FiShoppingBag, FiBox, FiChevronDown } from 'react-icons/fi';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
 interface SubMenuItem {
   name: string;
@@ -86,7 +86,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onCollapseChange }) => {
   }, []);
 
   return (
-    <motion.aside
+    <>
+      <motion.aside
       initial={{ width: 256 }}
       animate={{ width: isCollapsed ? 80 : 256 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -208,6 +209,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onCollapseChange }) => {
         ))}
       </nav>
     </motion.aside>
+    <Outlet/>
+    </>
   );
 };
 

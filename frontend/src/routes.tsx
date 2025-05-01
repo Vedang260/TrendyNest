@@ -8,7 +8,7 @@ import { ProtectedRoute } from './components/ProtectedRoutes';
  const Register = lazy(() => import('./pages/Register'));
  const Login = lazy(() => import('./pages/Login'));
  const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
-
+ const AdminProductsDashboard = lazy(() => import('./components/admin/products/ProductsDashboard'));
  export const router = createBrowserRouter([
   {
     path: '/',
@@ -22,7 +22,17 @@ import { ProtectedRoute } from './components/ProtectedRoutes';
       {
         element: <ProtectedRoute roles={['admin']} />,
         children: [
-          { path: "admin", element: <AdminDashboard /> },
+          { path: "admin", element: <AdminDashboard />,
+            children: [
+              { path: 'products', element: <AdminProductsDashboard />,
+                children: [
+                  { path: 'approved', element: <Register /> },
+                  { path: 'pending', element: <Login /> },
+                  { path: 'rejected', element: <Login /> },
+                ]
+              },
+            ]
+          },
           // Add more admin routes here...
         ],
       },

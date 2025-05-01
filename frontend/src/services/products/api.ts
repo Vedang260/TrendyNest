@@ -1,7 +1,7 @@
 const API_BASE_URL = 'http://localhost:8000/api';
 import axios from 'axios';
 
-export const fetchApprovedProducts = async (token: string) => {
+export const fetchAdminApprovedProducts = async (token: string) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/products/admin/approved`, {
         headers: {
@@ -16,7 +16,7 @@ export const fetchApprovedProducts = async (token: string) => {
     }
 };
 
-export const fetchPendingProducts = async (token: string) => {
+export const fetchAdminPendingProducts = async (token: string) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/products/admin/pending`, {
         headers: {
@@ -31,7 +31,7 @@ export const fetchPendingProducts = async (token: string) => {
     }
 };
 
-export const fetchRejectedProducts = async (token: string) => {
+export const fetchAdminRejectedProducts = async (token: string) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/products/admin/rejected`, {
         headers: {
