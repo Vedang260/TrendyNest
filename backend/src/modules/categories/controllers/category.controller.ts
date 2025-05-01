@@ -12,6 +12,13 @@ import { UpdateCategoryDto } from '../dtos/updateCategory.dto';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @Get('subCategories')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
+  async getAllCategoriesAndSubCategories(){
+    return this.categoryService.getAllCategoriesAndSubCategories();
+  }
+
   @Get()
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)

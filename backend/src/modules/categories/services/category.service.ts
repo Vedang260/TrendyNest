@@ -88,4 +88,18 @@ export class CategoryService{
             throw new InternalServerErrorException('Error in fetching all categories');
         }
     }
+
+    async getAllCategoriesAndSubCategories() {
+        try{
+            const categories = await this.getAllCategoriesAndSubCategories();
+            return{
+                success: true,
+                message: 'All data is fetched',
+                categories: categories
+            }
+        }catch(error){
+            console.error('Error in fetching all categories & subCategories:', error.message);
+            throw new InternalServerErrorException('Error in fetching all categories & subCategories');
+        }
+    }
 }

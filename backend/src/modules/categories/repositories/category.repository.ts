@@ -65,4 +65,24 @@ export class CategoryRepository{
         throw error;
       }
     }
+
+    // get All Categories & Sub-Categories
+    async getCategoriesAndSubCategories(){
+        try{
+            const categories = await this.categoryRepository.find({
+                relations: ['subCategory']
+            });
+            return categories.map((category) => ({
+                categoryId: category.categoryId,
+                categoryName: category.name,
+                subCategories: category.subCategories.map((sub) => ({
+                    subCategoryId: sub.subCategoryId,
+                    subCategoryName: sub.name,
+                })),
+            }));
+        }catch(error){
+            console.error('Error in fetching categories & subcategories ', error.message);
+            throw new InternalServerErrorException('Error in fetching in categories & subcategories');
+        }
+    }
 }
