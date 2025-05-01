@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { VendorStores } from '../entities/vendorStore.entity';
 import { CreateVendorStoreDto } from '../dtos/createVendorStore.dto';
 import { UpdateVendorStoreDto } from '../dtos/updateVendorStore.dto';
+import { StoreStatus } from 'src/common/enums/storeStatus.enums';
 
 @Injectable()
 export class VendorStoreRepository{
@@ -61,6 +62,84 @@ export class VendorStoreRepository{
         }catch(error){
             console.error('Error in fetching all vendor stores', error.message);
             throw new InternalServerErrorException('Error in fetching all vendor stores');
+        }
+    }
+
+    async getPendingVendorStoresForAdmin(){
+        try{
+            const vendorStores = await this.vendorStoreRepository.find({
+                relations: ['addresses', 'category', 'users'],
+                where: { status: StoreStatus.PENDING},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return vendorStores.map((store) => ({
+                vendorStoreId: store.vendorStoreId,
+                categoryName: store.category.name,
+                storeName: store.store_name,
+                storeDescription: store.store_description,
+                businessEmail: store.business_email,
+                businessPhone: store.business_phone,
+                address: store.address,
+                createdAt: store.createdAt,
+                updatedAt: store.updatedAt,
+            }));
+        }catch(error){
+            console.error('Error in fetching all pending vendor stores for admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all pending vendor stores for admin');
+        }
+    }
+
+    async getApprovedVendorStoresForAdmin(){
+        try{
+            const vendorStores = await this.vendorStoreRepository.find({
+                relations: ['addresses', 'category', 'users'],
+                where: { status: StoreStatus.APPROVED},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return vendorStores.map((store) => ({
+                vendorStoreId: store.vendorStoreId,
+                categoryName: store.category.name,
+                storeName: store.store_name,
+                storeDescription: store.store_description,
+                businessEmail: store.business_email,
+                businessPhone: store.business_phone,
+                address: store.address,
+                createdAt: store.createdAt,
+                updatedAt: store.updatedAt,
+            }));
+        }catch(error){
+            console.error('Error in fetching all approved vendor stores for admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all approved vendor stores for admin');
+        }
+    }
+
+    async getRejectedVendorStoresForAdmin(){
+        try{
+            const vendorStores = await this.vendorStoreRepository.find({
+                relations: ['addresses', 'category', 'users'],
+                where: { status: StoreStatus.REJECTED},
+                order: {
+                    createdAt: 'DESC'
+                }
+            });
+            return vendorStores.map((store) => ({
+                vendorStoreId: store.vendorStoreId,
+                categoryName: store.category.name,
+                storeName: store.store_name,
+                storeDescription: store.store_description,
+                businessEmail: store.business_email,
+                businessPhone: store.business_phone,
+                address: store.address,
+                createdAt: store.createdAt,
+                updatedAt: store.updatedAt,
+            }));
+        }catch(error){
+            console.error('Error in fetching all rejected vendor stores for admin', error.message);
+            throw new InternalServerErrorException('Error in fetching all rejected vendor stores for admin');
         }
     }
 }
