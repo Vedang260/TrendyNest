@@ -18,3 +18,22 @@ export interface AdminProductsResponse {
     message: string;
     products: AdminProducts[];
 }
+
+export interface ShopProducts{
+    productId: string;
+    subCategoryId: string;
+    name: string;
+    brand: string;
+    price: number;
+    description: string;
+    mainImage: string;
+    bestseller: boolean;
+    subCategoryName: string;
+    availabilityStatus: string;
+}
+
+export interface ShopProductsResponse {
+    success: boolean;
+    message: string;
+    products: ShopProducts[];
+  }
