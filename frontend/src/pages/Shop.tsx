@@ -4,16 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingBag } from 'react-icons/fi';
 import { useAppSelector } from '../redux/hooks/hooks';
 import { fetchProductsForCustomers } from '../services/products/api';
-import { ProductsResponse, Product } from '../types/products/products';
+import { ShopProductsResponse, ShopProducts } from '../types/products/products';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
+import { addToCart } from '../services/cart/api';
 
 const Shop: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const token = useAppSelector((state) => state.auth?.token || '');
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ShopProducts[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Get subCategoryId from URL
@@ -24,7 +25,7 @@ const Shop: React.FC = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const response: ProductsResponse = await fetchProductsForCustomers(token);
+        const response: ShopProductsResponse = await fetchProductsForCustomers(token);
         if (response.success) {
           // Filter products by subCategoryId if provided
           const filteredProducts = subCategoryId

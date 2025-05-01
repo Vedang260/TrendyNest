@@ -16,11 +16,7 @@ export class CartItems{
 
     @Column()
     quantity: number;
-
-    @OneToOne(() => User)
-    @JoinColumn({ name: 'customerId' })
-    customer: User;
-    
+        
     @ManyToOne(() => Cart, (cart) => cart.cartItems, { onDelete: 'CASCADE' })
     cart: Cart;
     

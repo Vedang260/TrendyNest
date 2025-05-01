@@ -4,6 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoutes';
 import PendingProducts from './components/admin/products/PendingProducts';
 import ApprovedProducts from './components/admin/products/ApprovedProducts';
 import RejectedProducts from './components/admin/products/RejectedProducts';
+import Shop from './pages/Shop';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -33,6 +34,12 @@ import RejectedProducts from './components/admin/products/RejectedProducts';
           // Add more admin routes here...
         ],
       },
+      {
+        element: <ProtectedRoute roles={['customer']} />,
+        children: [
+          {path: 'customer/shop', element: <Shop/>}
+        ]
+      }
     ],
   },
 ]);

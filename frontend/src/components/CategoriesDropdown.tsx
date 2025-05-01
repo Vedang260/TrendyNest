@@ -78,7 +78,7 @@ const CategoriesDropdown: React.FC<CategoriesDropdownProps> = ({ isOpen, onClose
 
   // Handle sub-category click
   const handleSubCategoryClick = (subCategoryId: string) => {
-    navigate(`/shop?subCategoryId=${subCategoryId}`);
+    navigate(`/customer/shop?subCategoryId=${subCategoryId}`);
     onClose();
   };
 
