@@ -1,15 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
-import { FiCheckCircle, FiXCircle, FiX } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import AdminSidebar from '../../../components/AdminSidebar';
-import { fetchAdminPendingProducts, approveProduct, rejectProduct } from '../../../services/products/api';
+import { fetchAdminApprovedProducts, rejectProduct } from '../../../services/products/api';
 import { AdminProducts, AdminProductsResponse } from '../../../types/products/products'
 import { useAppSelector } from '../../../redux/hooks/hooks';
 import toast from 'react-hot-toast';
 
-const PendingProducts: React.FC = () => {
+const ApprovedProducts: React.FC = () => {
   const [products, setProducts] = useState<AdminProducts[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<AdminProducts | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -21,7 +21,7 @@ const PendingProducts: React.FC = () => {
 
   const loadProducts = async () => {
     try {
-      const response: AdminProductsResponse = await fetchAdminPendingProducts(token);
+      const response: AdminProductsResponse = await fetchAdminApprovedProducts(token);
       if (response.success) {
         setProducts(response.products);
         setError(null);
@@ -51,21 +51,6 @@ const PendingProducts: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // Handle approve product
-  const handleApprove = async (productId: string) => {
-    try {
-      const response = await approveProduct(productId, token);
-      if (response.success) {
-        toast.success(response.message);
-        loadProducts();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (err: any) {
-      toast.error(err.message);
-    }
-  };
 
   // Handle reject product
   const handleReject = async (productId: string) => {
@@ -112,7 +97,7 @@ const PendingProducts: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="text-3xl p-8 font-extrabold text-purple-600 mb-8 bg-white"
             >
-              Pending Products
+              Approved Products
             </motion.h1>
 
             {error && <div className="text-red-600 text-center mb-6">{error}</div>}
@@ -124,7 +109,7 @@ const PendingProducts: React.FC = () => {
                   <tr className="bg-indigo-100/50 text-purple-700">
                     <th className="p-4 font-semibold">Product ID</th>
                     <th className="p-4 font-semibold">Name</th>
-                    <th className="p-4 font-semibold">Action</th>
+                    <th className="p-4 font-semibold">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -152,25 +137,10 @@ const PendingProducts: React.FC = () => {
                         >
                           {product.name}
                         </td>
-                        <td className="p-4 flex space-x-2">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleApprove(product.productId)}
-                            className="p-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
-                            aria-label="Approve product"
-                          >
-                            <FiCheckCircle />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleReject(product.productId)}
-                            className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-                            aria-label="Reject product"
-                          >
-                            <FiXCircle />
-                          </motion.button>
+                        <td className="p-4">
+                            <div className="flex space-x-2 bg-green-100 text-green-900 px-3 py-1 rounded-full text-sm font-semibold w-fit">
+                                APPROVED
+                            </div>
                         </td>
                       </motion.tr>
                     ))
@@ -319,14 +289,6 @@ const PendingProducts: React.FC = () => {
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => handleApprove(selectedProduct.productId)}
-                            className="flex-1 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                          >
-                            Approve
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
                             onClick={() => handleReject(selectedProduct.productId)}
                             className="flex-1 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                           >
@@ -347,4 +309,4 @@ const PendingProducts: React.FC = () => {
   );
 };
 
-export default PendingProducts;
+export default ApprovedProducts;
