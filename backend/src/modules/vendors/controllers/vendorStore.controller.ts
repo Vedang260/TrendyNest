@@ -20,11 +20,25 @@ export class VendorStoreController {
     return this.vendorStoreService.getVendorStoreByVendorId(req['user'].userId);
   }
 
-  @Get()
+  @Get('admin/pending')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  async findAll(){
-    return this.vendorStoreService.getAllVendorStores();
+  async getPendingStoresForAdmin(){
+    return this.vendorStoreService.getPendingVendorStoresForAdmin();
+  }
+
+  @Get('admin/approved')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getApprovedStoresForAdmin(){
+    return this.vendorStoreService.getApprovedVendorStoresForAdmin();
+  }
+
+  @Get('admin/rejected')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getRejectedStoresForAdmin(){
+    return this.vendorStoreService.getRejectedVendorStoresForAdmin();
   }
 
   @Delete(':id')
