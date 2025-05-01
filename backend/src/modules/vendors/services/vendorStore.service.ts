@@ -100,6 +100,57 @@ export class VendorStoreService{
             }
         }
     }
+
+    async getPendingVendorStoresForAdmin(): Promise<{success: boolean; message: string; vendorStores: any}> {
+        try{
+            const vendorStores = await this.vendorStoreRepository.getPendingVendorStoresForAdmin();
+            return {
+                success: true,
+                message: 'All Vendor Stores are fetched',
+                vendorStores: vendorStores
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the pending vendor stores',
+                vendorStores: null
+            }
+        }
+    }
+
+    async getApprovedVendorStoresForAdmin(): Promise<{success: boolean; message: string; vendorStores: any}> {
+        try{
+            const vendorStores = await this.vendorStoreRepository.getApprovedVendorStoresForAdmin();
+            return {
+                success: true,
+                message: 'All Vendor Stores are fetched',
+                vendorStores: vendorStores
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the Approved stores',
+                vendorStores: null
+            }
+        }
+    }
+
+    async getRejectedVendorStoresForAdmin(): Promise<{success: boolean; message: string; vendorStores: any}> {
+        try{
+            const vendorStores = await this.vendorStoreRepository.getRejectedVendorStoresForAdmin();
+            return {
+                success: true,
+                message: 'All Vendor Stores are fetched',
+                vendorStores: vendorStores
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch All the Rejected stores',
+                vendorStores: null
+            }
+        }
+    }
     
     async getVendorStoreByVendorId(vendorId: string): Promise<{success: boolean; message: string; vendorStores: VendorStores[] | null}> {
         try{
