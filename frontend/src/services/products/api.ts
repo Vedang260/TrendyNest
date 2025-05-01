@@ -45,3 +45,43 @@ export const fetchAdminRejectedProducts = async (token: string) => {
       throw new Error(error.response?.data?.message || 'Error in Fetching the rejected products');
     }
 };
+
+export const approveProduct = async(productId: string, token: string) => {
+    try {
+        const status = 'approved';
+        
+        const response = await axios.put(`${API_BASE_URL}/products/${productId}`, {
+            product: {
+                status: status
+            }
+        }, {
+          headers: {
+              'Authorization': `Bearer ${token}`, 
+              'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Error in approving the product');
+    }
+};
+
+export const rejectProduct = async(productId: string, token: string) => {
+    try {
+        const status = 'rejected';
+        
+        const response = await axios.put(`${API_BASE_URL}/products/${productId}`, {
+            product: {
+                status: status
+            }
+        }, {
+          headers: {
+              'Authorization': `Bearer ${token}`, 
+              'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+    } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Error in rejecting the product');
+    }
+};

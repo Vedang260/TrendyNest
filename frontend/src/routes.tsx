@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoutes';
+import PendingProducts from './components/admin/products/PendingProducts';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -9,6 +10,7 @@ import { ProtectedRoute } from './components/ProtectedRoutes';
  const Login = lazy(() => import('./pages/Login'));
  const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
  const AdminProductsDashboard = lazy(() => import('./components/admin/products/ProductsDashboard'));
+
  export const router = createBrowserRouter([
   {
     path: '/',
@@ -22,17 +24,8 @@ import { ProtectedRoute } from './components/ProtectedRoutes';
       {
         element: <ProtectedRoute roles={['admin']} />,
         children: [
-          { path: "admin", element: <AdminDashboard />,
-            children: [
-              { path: 'products', element: <AdminProductsDashboard />,
-                children: [
-                  { path: 'approved', element: <Register /> },
-                  { path: 'pending', element: <Login /> },
-                  { path: 'rejected', element: <Login /> },
-                ]
-              },
-            ]
-          },
+          { path: "admin", element: <AdminDashboard /> },
+          { path: 'admin/products/pending', element: <PendingProducts />}
           // Add more admin routes here...
         ],
       },

@@ -7,6 +7,7 @@ import { AdminDashboardData } from '../../../types/dashboard/adminDashboard';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { useAppSelector } from '../../../redux/hooks/hooks';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Counter: React.FC<{ end: number; duration: number }> = ({ end, duration }) => {
   const [count, setCount] = useState(0);
@@ -33,7 +34,9 @@ const ProductsDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const token = useAppSelector((state) => state.auth?.token);
-
+  const location = useLocation();
+  const isBaseProductsRoute = location.pathname === '/admin/products';
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -134,18 +137,18 @@ const ProductsDashboard: React.FC = () => {
 
   return (
     <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
-      <Navbar />
       <div className="flex flex-col min-h-screen">
         <div className="flex flex-1">
           <AdminSidebar onCollapseChange={setIsSidebarCollapsed} />
-          
           <motion.main
             initial={{ marginLeft: 256 }}
             animate={{ marginLeft: isSidebarCollapsed ? 0 : 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="flex-1 p-8 bg-gradient-to-b from-gray-100 to-white min-h-[calc(100vh-64px)]"
           >
-            <motion.h1
+            { isBaseProductsRoute ? (
+              <>
+                <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -181,9 +184,11 @@ const ProductsDashboard: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+              </>
+            ) : ( <Outlet /> )}
+            
           </motion.main>
         </div>
-        <Footer />
       </div>
     </div>
   );
