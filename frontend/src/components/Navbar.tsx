@@ -3,21 +3,29 @@ import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiBell, FiLogOut } from 'reac
 import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../redux/hooks/hooks';
 import { logout } from '../redux/slices/auth.slice';
+import CategoriesDropdown from './CategoriesDropdown';
 
 const Navbar: React.FC = () => {
   const navItems = ['Home', 'Shop', 'Categories', 'About', 'Contact'];
   const icons = [<FiSearch />, <FiHeart />, <FiShoppingBag />, <FiBell />];
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isCategoriesDropdownOpen, setIsCategoriesDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const toggleUserDropdown = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen);
+    setIsCategoriesDropdownOpen(false); // Close categories dropdown if open
+  };
+
+  const toggleCategoriesDropdown = () => {
+    setIsCategoriesDropdownOpen(!isCategoriesDropdownOpen);
+    setIsUserDropdownOpen(false); // Close user dropdown if open
   };
 
   const handleLogout = () => {
     dispatch(logout());
-    setIsDropdownOpen(false);
+    setIsUserDropdownOpen(false);
   };
 
   return (
@@ -32,22 +40,28 @@ const Navbar: React.FC = () => {
           TrendyNest
         </motion.div>
 
-        <div className="hidden md:flex space-x-10">
+        <div className="hidden md:flex space-x-10 relative">
           {navItems.map((item) => (
             <motion.a
               key={item}
-              href="#"
+              href={item === 'Shop' ? '/shop' : item === 'Categories' ? '#' : `/${item.toLowerCase()}`}
+              onClick={item === 'Categories' ? toggleCategoriesDropdown : undefined}
               whileHover={{ scale: 1.1, color: '#4F46E5' }}
-              className="text-gray-700 font-medium hover:text-indigo-600 transition-colors"
+              className={`text-gray-700 font-medium hover:text-indigo-600 transition-colors ${
+                item === 'Categories' && isCategoriesDropdownOpen ? 'text-indigo-600' : ''
+              }`}
             >
               {item}
             </motion.a>
           ))}
+          <CategoriesDropdown
+            isOpen={isCategoriesDropdownOpen}
+            onClose={() => setIsCategoriesDropdownOpen(false)}
+          />
         </div>
 
         <div className="flex items-center space-x-6 relative">
           {icons.map((Icon, index) => (
-            
             <motion.button
               key={index}
               whileHover={{ scale: 1.2, rotate: 10 }}
@@ -58,16 +72,16 @@ const Navbar: React.FC = () => {
           ))}
           <div className="relative">
             <motion.button
-              onClick={toggleDropdown}
+              onClick={toggleUserDropdown}
               className="p-2 text-gray-700 hover:text-indigo-600 transition-colors text-2xl flex items-center space-x-2"
             >
               <FiUser />
               {user && (
-                <span className="text-gray-700 font-medium text-sm">{(user.username).toUpperCase()}</span>
+                <span className="text-gray-700 font-medium text-sm">{user.username.toUpperCase()}</span>
               )}
             </motion.button>
             <AnimatePresence>
-              {isDropdownOpen && user && (
+              {isUserDropdownOpen && user && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -76,7 +90,7 @@ const Navbar: React.FC = () => {
                   className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
                 >
                   <div className="px-4 py-2 text-gray-700 font-medium">
-                    {(user.role).toUpperCase()}
+                    {user.role.toUpperCase()}
                   </div>
                   <button
                     onClick={handleLogout}
