@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const fetchAdminApprovedVendorStores = async (token: string) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/products/admin/approved`, {
+      const response = await axios.get(`${API_BASE_URL}/vendor-stores/admin/approved`, {
         headers: {
             'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export const fetchAdminApprovedVendorStores = async (token: string) => {
 
 export const fetchAdminPendingVendorStores = async (token: string) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/products/admin/pending`, {
+      const response = await axios.get(`${API_BASE_URL}/vendor-stores/admin/pending`, {
         headers: {
             'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const fetchAdminPendingVendorStores = async (token: string) => {
 
 export const fetchAdminRejectedVendorStores = async (token: string) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/products/admin/rejected`, {
+      const response = await axios.get(`${API_BASE_URL}/vendor-stores/admin/rejected`, {
         headers: {
             'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json',
@@ -46,12 +46,12 @@ export const fetchAdminRejectedVendorStores = async (token: string) => {
     }
 };
 
-export const approveProduct = async(productId: string, token: string) => {
+export const changeStatus = async(vendorStoreId: string, token: string, status: string) => {
     try {
         const status = 'approved';
         
-        const response = await axios.put(`${API_BASE_URL}/products/${productId}`, {
-            product: {
+        const response = await axios.put(`${API_BASE_URL}/vendor-stores/${vendorStoreId}`, {
+            vendorStore: {
                 status: status
             }
         }, {
@@ -63,25 +63,5 @@ export const approveProduct = async(productId: string, token: string) => {
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Error in approving the product');
-    }
-};
-
-export const rejectProduct = async(productId: string, token: string) => {
-    try {
-        const status = 'rejected';
-        
-        const response = await axios.put(`${API_BASE_URL}/products/${productId}`, {
-            product: {
-                status: status
-            }
-        }, {
-          headers: {
-              'Authorization': `Bearer ${token}`, 
-              'Content-Type': 'application/json',
-          },
-        });
-        return response.data;
-    } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Error in rejecting the product');
     }
 };
