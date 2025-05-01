@@ -21,7 +21,7 @@ export class SubCategoryController {
 
   @Get()
   @UseGuards(RolesGuard)
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.VENDOR)
   async findAll(){
     return this.subCategoryService.getAllSubCategories();
   }
