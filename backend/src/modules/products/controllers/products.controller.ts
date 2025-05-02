@@ -31,11 +31,18 @@ export class ProductsController {
     return this.productService.getAllProductsForCustomers();
   }
 
-  @Get('/:vendorStoreId')
+  @Get('/vendorStore/:vendorStoreId')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.VENDOR)
   async getProductsByVendorId(@Param('id') id: string){
     return this.productService.getProductsByVendorStore(id);
+  }
+
+  @Get('/:productId')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.VENDOR)
+  async getProductDetails(@Param('productId') productId: string){
+    return this.productService.getProductDetails(productId);
   }
 
   @Get('/admin/approved')

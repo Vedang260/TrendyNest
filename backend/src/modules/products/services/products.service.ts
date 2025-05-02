@@ -94,6 +94,23 @@ export class ProductService{
         }
     }
 
+    async getProductDetails(productId: string): Promise<{ success: boolean; message: string; product: any}>{
+        try{
+            const product = await this.productsRepository.getProductDetails(productId);
+            return {
+                success: true,
+                message: 'All Products are fetched',
+                product: product
+            }
+        }catch(error){
+            return{
+                success: false,
+                message: 'Failed to fetch the product details',
+                product: null
+            }
+        }
+    }
+
     async getApprovedProductsForAdmin(): Promise<{success: boolean; message: string; products: any}> {
         try{
             const products = await this.productsRepository.getAllApprovedProductsForAdmin();

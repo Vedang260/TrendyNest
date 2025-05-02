@@ -86,6 +86,30 @@ export class ProductsRepository{
         }
     }
 
+    async getProductDetails(productId: string) {
+        try{
+            const product = await this.productsRepository.find({
+                relations: ['subCategory', 'productStock'],
+                where: {productId, status: ProductStatus.APPROVED},
+            });
+            return product.map((product) => ({
+                productId: product.productId,
+                subCategoryId: product.subCategoryId,
+                name: product.name,
+                brand: product.brand,
+                price: product.price,
+                description: product.description,
+                mainImage: product.mainImage,
+                bestseller: product.bestseller,
+                subCategoryName: product.subCategory?.name, 
+                availabilityStatus: product.productStock?.availabilityStatus
+            }));
+        }catch(error){
+            console.error('Error in fetching product detailsfor the customers', error.message);
+            throw new InternalServerErrorException('Error in fetching product details for the customers');       
+        }
+    }
+    
     async getAllProductsForCustomers(){
         try{
             const products = await this.productsRepository.find({
