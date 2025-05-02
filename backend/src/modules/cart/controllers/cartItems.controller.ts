@@ -35,7 +35,8 @@ export class CartItemsController {
   @Put(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.CUSTOMER)
-  async updateCartItem(@Param('id') id: string, @Body('quantity') quantity: number){
+  async updateCartItem(@Param('id') id: string, @Body() body : { quantity: number }){
+    const { quantity } = body;
     return this.cartItemsService.updateCartItem(id, quantity);
   }
 } 

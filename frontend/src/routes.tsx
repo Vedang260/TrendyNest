@@ -5,6 +5,7 @@ import PendingProducts from './components/admin/products/PendingProducts';
 import ApprovedProducts from './components/admin/products/ApprovedProducts';
 import RejectedProducts from './components/admin/products/RejectedProducts';
 import Shop from './pages/Shop';
+import CartComponent from './components/Cart';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));

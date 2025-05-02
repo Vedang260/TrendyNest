@@ -49,6 +49,8 @@ export class CartItemsService{
 
     async updateCartItem(cartItemId: string, quantity: number): Promise<{success: boolean; message: string;}>{
         try{
+            console.log("CartItem : ", cartItemId);
+            console.log("quantity: ", quantity);
             await this.cartItemsRepository.updateCartItem(cartItemId, quantity);
             return {
                 success: true,

@@ -36,6 +36,7 @@ export class CartItemsRepository{
     // update cart Item
     async updateCartItem(cartItemsId: string, quantity: number): Promise<boolean>{
         try{
+            console.log("Quantity: ", quantity);
             const result = await this.cartItemsRepository.update({ cartItemsId}, {quantity});
             return result.affected ? result.affected > 0 : false;
         }catch(error){

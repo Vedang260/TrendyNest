@@ -8,7 +8,7 @@ import { ShopProductsResponse, ShopProducts } from '../types/products/products';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
-import { addToCart } from '../services/cart/api';
+import { addToCart } from '../services/cart';
 
 const Shop: React.FC = () => {
   const location = useLocation();
