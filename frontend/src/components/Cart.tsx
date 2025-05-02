@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FiShoppingCart, FiX, FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi';
 import { useAppSelector } from '../redux/hooks/hooks';
 import { fetchCartItems, updateCartItem, removeCartItem } from '../services/cart';
+import { createCheckoutSession } from '../services/payment';
 import { CartItem } from '../types/cart';
 import toast from 'react-hot-toast';
 
@@ -116,6 +117,17 @@ const CartComponent: React.FC<CartComponentProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  // handle Checkout Session
+  const handleCreateCheckoutSession = async() => {
+    try{
+      if(cartItems && token){
+        const response = await createCheckoutSession(cartItems, totalPrice, token);
+        window.location.href = response.url;
+      }
+    }catch(error: any){
+
+    }
+  }
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -282,6 +294,7 @@ const CartComponent: React.FC<CartComponentProps> = ({ isOpen, onClose }) => {
                   </div>
                   <button
                     className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-bold hover:shadow-lg transition-all"
+                    onClick={() => handleCreateCheckoutSession()}
                   >
                     Proceed to Checkout
                   </button>

@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
-import { Order } from '../orders/entities/order.entity';
 import { User } from '../../users/entities/users.entity'
 import { PaymentStatus } from 'src/common/enums/paymentStatus.enums';
 
@@ -10,9 +9,6 @@ export class Payments {
 
   @Column('uuid')
   customerId: string;
-  
-  @OneToOne(() => Order, (order) => order.payment)
-  order: Order;
 
   @ManyToOne(() => User, (user) => user.payments)
   @JoinColumn({ name: 'customerId'})
