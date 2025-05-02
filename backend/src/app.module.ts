@@ -12,6 +12,7 @@ import { UploadModule } from './utils/uploads/uploads.module';
 import { ProductsModule } from './modules/products/module/products.module';
 import { CartItemsModule } from './modules/cart/modules/cartItems.module';
 import { DashboardModule } from './modules/dashboard/modules/dashboard.module';
+import { PaymentModule } from './modules/payments/modules/payment.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DashboardModule } from './modules/dashboard/modules/dashboard.module';
     ProductsModule,
     CartItemsModule,
     DashboardModule,
+    PaymentModule,
     UploadModule,
   ],
 })
@@ -32,6 +34,9 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
     .apply(AuthMiddleware)
+    .exclude(
+      { path: 'api/webhooks/stripe', method: RequestMethod.ALL }, // ✅ Exclude webhook
+    )
     .forRoutes(
       { path: 'users', method: RequestMethod.ALL },
       { path: 'categories', method: RequestMethod.ALL },
@@ -39,7 +44,8 @@ export class AppModule {
       { path: 'vendor-stores', method: RequestMethod.ALL },
       { path: 'products', method: RequestMethod.ALL },
       { path: 'cart-items', method: RequestMethod.ALL },
-      { path: 'dashboard', method: RequestMethod.ALL }
+      { path: 'dashboard', method: RequestMethod.ALL },
+      { path: 'payments', method: RequestMethod.ALL}
     );
   }
 }

@@ -122,8 +122,11 @@ const CartComponent: React.FC<CartComponentProps> = ({ isOpen, onClose }) => {
     try{
       if(cartItems && token){
         const response = await createCheckoutSession(cartItems, totalPrice, token);
-        window.location.href = response.url;
+        if (response.data?.url) {
+            window.location.href = response.data.url;
+        
       }
+    }
     }catch(error: any){
 
     }

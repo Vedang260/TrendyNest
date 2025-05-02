@@ -2,8 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import Stripe from 'stripe';
 import { PaymentRepository } from '../repositories/payment.repository';
 import { PaymentStatus } from '../../../common/enums/paymentStatus.enums';
-import  dotenv  from 'dotenv';
-import { CartItems } from 'src/modules/cart/entities/cartItems.entity';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Injectable()
@@ -24,7 +23,7 @@ export class PaymentService {
       // Create payment record first
       const payment = await this.paymentRepository.createNewPayment({
         customerId: customerId,
-        amount: totalPrice
+        amount: Math.round(Number(totalPrice))
       });
 
       const session = await this.stripe.checkout.sessions.create({
@@ -33,13 +32,15 @@ export class PaymentService {
           price_data: {
             currency: 'inr', // Or your preferred currency
             product_data: {
-              name: item.name, // Make sure cartItems have a 'name'
+              name: item.product.name, // Make sure cartItems have a 'name'
             },
-            unit_amount: item.price, // Convert to cents
+            unit_amount: Math.round(Number(item.product.price) * 100), // Convert to cents
           },
-          quantity: item.quantity,
+          quantity: Number(item.quantity),
         })),
         mode: 'payment',
+        success_url: `http://localhost:5173/`,
+          cancel_url: `http://localhost:5173/cancel`,
         metadata: {
           paymentId: payment.paymentId,
           customerId: customerId,
@@ -49,12 +50,13 @@ export class PaymentService {
       await this.paymentRepository.updatePayment(payment.paymentId, {
         transactionId: session.id,
       });
-
+      console.log("Sending Response: ",session.id, session.url);
       return {
         success: true,
         sessionId: session.id,
         url: session.url, 
       };
+
     } catch (error: any) {
       console.error(`Checkout session error: ${error.message}`);
       return{

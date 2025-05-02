@@ -1,24 +1,37 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as dotenv from 'dotenv';
 import * as express from 'express';
-import { join } from 'path';
+import * as bodyParser from 'body-parser';
 
-dotenv.config()
-//console.log('JWT_SECRET:', process.env.JWT_SECRET);
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // Create app with rawBody enabled
+  const app = await NestFactory.create(AppModule, { rawBody: true });
+
+  // Apply raw body parser FIRST for Stripe webhooks
+  app.use(
+    '/api/webhooks/stripe',
+    express.raw({
+      type: 'application/json',
+      limit: '1mb',
+    }),
+    (req, res, next) => {
+      // Manually assign raw body buffer to req.rawBody
+      req.rawBody = req.body;
+      next();
+    }
+  );
+  
+
+  // Then apply other middleware
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     transform: true,
   }));
   app.enableCors();
-  
-  // serving static files from uploads directory
-  //app.use('/videos', express.static(join(__dirname, '..', 'uploads/videos')));
+
   await app.listen(process.env.PORT ?? 8000);
-  console.log('🚀Server is running on port: 8000')
+  console.log('🚀 Server is running on port: 8000');
 }
 bootstrap();

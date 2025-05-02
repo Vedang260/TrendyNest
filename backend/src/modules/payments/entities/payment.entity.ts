@@ -14,7 +14,7 @@ export class Payments {
   @JoinColumn({ name: 'customerId'})
   customer: User;
 
-  @Column()
+  @Column({ nullable: true })
   transactionId: string; // Stripe transaction ID (e.g., pi_...)
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })

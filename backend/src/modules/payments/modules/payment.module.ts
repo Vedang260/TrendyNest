@@ -8,8 +8,8 @@ import { WebhookController } from '../controllers/webhook.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Payments])],
-  controllers: [PaymentsController],
-  providers: [PaymentService, PaymentRepository, WebhookController],
-  exports: [PaymentService, PaymentRepository, WebhookController],
+  controllers: [PaymentsController, WebhookController],
+  providers: [PaymentService, PaymentRepository ],
+  exports: [PaymentService, PaymentRepository ],
 })
 export class PaymentModule {} 
