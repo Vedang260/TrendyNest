@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { OrderStatus } from "src/common/enums/orderStatus.enums";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'orders' })
 export class Orders{
@@ -6,12 +7,20 @@ export class Orders{
     orderId: string;
 
     @Column('uuid')
-    customerId: string
+    customerId: string;
 
     @Column('uuid')
-    paymentId: string
+    paymentId: string;
 
     @Column()
-    totalAmount: number
-    
+    totalAmount: number;
+
+    @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING})
+    status: OrderStatus
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
