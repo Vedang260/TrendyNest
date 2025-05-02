@@ -335,7 +335,6 @@ const Shop: React.FC = () => {
           </motion.div>
         )}
       </section>
-
       <Footer />
     </div>
   );
