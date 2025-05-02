@@ -1,11 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Products } from '../entities/products.entity';
-import { CreateProductDto } from '../dtos/CreateProduct.dto';
-import { UpdateProductDto } from '../dtos/updateProduct.dto';
-import { ProductStatus } from 'src/common/enums/productStatus.enums';
 import { Payments } from '../entities/payment.entity';
+import { CreatePaymentDto } from '../dtos/createPayment.dto';
 
 @Injectable()
 export class PaymentRepository{
@@ -17,22 +14,42 @@ export class PaymentRepository{
     // creates new Payment entry
     async createNewPayment(createPaymentDto: Partial<CreatePaymentDto>): Promise<Payments> {
         try{
-            const newProduct = this.productsRepository.create(createProductDto);
-            return this.productsRepository.save(newProduct);
+            const newPayment = this.paymentRepository.create(createPaymentDto);
+            return this.paymentRepository.save(newPayment);
         }catch(error){
-            console.error('Error in creating new product ', error.message);
-            throw new InternalServerErrorException('Error in creating new product');
+            console.error('Error in creating new payment ', error.message);
+            throw new InternalServerErrorException('Error in creating new payment');
         }
     }
 
-    // deletes a product
-    async deleteProduct(productId: string): Promise<boolean> {
-        try{
-            const result = await this.productsRepository.delete(productId);
-            return result.affected ? result.affected > 0 : false;
-        }catch(error){
-            console.error('Error in deleting a product ', error.message);
-            throw new InternalServerErrorException('Error in deleting a product');
+    // updates payment
+    async updatePayment(paymentId: string, updateData: Partial<Payments>): Promise<Payments | null> {
+        try {
+            await this.paymentRepository.update(paymentId, updateData);
+            return this.paymentRepository.findOne({ where: { paymentId } });
+        } catch(error) {
+            console.error('Error updating payment', error.message);
+            throw new InternalServerErrorException('Error updating payment');
+        }
+    }
+
+    // finds payment by ID
+    async findById(paymentId: string): Promise<Payments | null> {
+        try {
+            return this.paymentRepository.findOne({ where: { paymentId } });
+        } catch(error) {
+            console.error('Error finding payment', error.message);
+            throw new InternalServerErrorException('Error finding payment');
+        }
+    }
+
+    // finds payment by transaction ID
+    async findByTransactionId(transactionId: string): Promise<Payments | null> {
+        try {
+            return this.paymentRepository.findOne({ where: { transactionId } });
+        } catch(error) {
+            console.error('Error finding payment by transaction ID', error.message);
+            throw new InternalServerErrorException('Error finding payment by transaction ID');
         }
     }
 }
