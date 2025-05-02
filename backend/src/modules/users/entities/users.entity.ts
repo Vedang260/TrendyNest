@@ -1,4 +1,5 @@
 import { UserRole } from "src/common/enums/roles.enums";
+import { Payments } from "src/modules/payments/entities/payment.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -21,6 +22,9 @@ export class User{
 
     @OneToMany(() => VendorStores, (store) => store.vendor)
     vendorStores: VendorStores[];
+    
+    @OneToMany(() => Payments, (payment) => payment.customer)
+    payments: Payments[]
     
     @CreateDateColumn()
     createdAt: Date;
