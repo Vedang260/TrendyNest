@@ -40,7 +40,7 @@ export class ProductsController {
 
   @Get('/:productId')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.ADMIN, UserRole.VENDOR)
+  @Roles(UserRole.ADMIN, UserRole.VENDOR, UserRole.CUSTOMER)
   async getProductDetails(@Param('productId') productId: string){
     return this.productService.getProductDetails(productId);
   }
