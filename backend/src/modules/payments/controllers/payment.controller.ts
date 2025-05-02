@@ -16,10 +16,10 @@ export class PaymentsController {
   @Roles(UserRole.CUSTOMER)
   async handleCreateCheckoutSession(@Req() req: Request, @Body() body :{ cartItems: any, totalPrice: number}) {
     try {
-        const { cartItems, totalPrice } = body;
-        return this.paymentService.createCheckoutSession(req['user'].userId, cartItems, totalPrice);
-    } catch (err) {
-      
+      const { cartItems, totalPrice } = body;
+      return this.paymentService.createCheckoutSession(req['user'].userId, cartItems, totalPrice);
+    }catch (err) {
+      console.error("Error in creating the checkout session");  
     }
   }
 }

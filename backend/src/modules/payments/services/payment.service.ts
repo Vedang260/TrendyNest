@@ -44,6 +44,7 @@ export class PaymentService {
         metadata: {
           paymentId: payment.paymentId,
           customerId: customerId,
+          cartItems: cartItems
         },
       });
 
