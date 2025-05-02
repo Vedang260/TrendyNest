@@ -16,7 +16,7 @@ export class Orders{
     totalAmount: number;
 
     @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING})
-    status: OrderStatus
+    status: OrderStatus;
 
     @CreateDateColumn()
     createdAt: Date;
