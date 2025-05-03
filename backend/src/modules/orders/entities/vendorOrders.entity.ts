@@ -1,5 +1,5 @@
 import { VendorOrderStatus } from "src/common/enums/vendorOrderStatus.enums";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Orders } from "./orders.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
 
@@ -24,7 +24,7 @@ export class VendorOrders{
     @JoinColumn({ name: 'orderId' })
     orders: Orders;
 
-    @OneToOne(() => VendorStores)
+    @ManyToOne(() => VendorStores, (vendorStores) => vendorStores.vendorOrders)
     @JoinColumn({ name: 'vendorStoreId'})
     vendorStores: VendorStores;
 

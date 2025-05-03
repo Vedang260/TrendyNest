@@ -4,6 +4,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 import { Addresses } from "./address.entity";
 import { Categories } from "src/modules/categories/entities/category.entity";
 import { Products } from "src/modules/products/entities/products.entity";
+import { VendorOrders } from "src/modules/orders/entities/vendorOrders.entity";
 
 @Entity({ name: 'vendor_stores' })
 export class VendorStores{
@@ -36,6 +37,9 @@ export class VendorStores{
     
     @OneToMany(() => Products, (product) => product.vendorStores)
     products: Products[];
+
+    @OneToMany(() => VendorOrders, (vendorOrder) => vendorOrder.vendorStores)
+    vendorOrders: VendorOrders[];
 
     @Column()
     store_name: string;
