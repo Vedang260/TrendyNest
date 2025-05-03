@@ -44,7 +44,12 @@ export class PaymentService {
         metadata: {
           paymentId: payment.paymentId,
           customerId: customerId,
-          cartItems: cartItems
+          cartItems: JSON.stringify(cartItems.map(item => ({
+            productId: item.product.productId,
+            quantity: item.quantity,
+            price: item.product.price,
+          }))),
+          totalPrice: JSON.stringify(totalPrice)
         },
       });
 
@@ -101,7 +106,9 @@ export class PaymentService {
             status: PaymentStatus.COMPLETED,
             transactionId: session.payment_intent?.toString() || session.id,
         });
+        
         // Add your order fulfillment logic here
+
     }
   }
 
