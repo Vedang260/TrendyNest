@@ -1,20 +1,21 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiHeart, FiShoppingCart, FiFilter, FiX, FiChevronRight } from 'react-icons/fi';
+import { FiHeart, FiShoppingCart, FiFilter, FiX, FiChevronRight, FiCheck } from 'react-icons/fi';
 import { useAppSelector } from '../redux/hooks/hooks';
 import { fetchProductsForCustomers } from '../services/products/api';
 import { ShopProductsResponse, ShopProducts } from '../types/products/products';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
-import { addToCart } from '../services/cart';
+import { addToCart, fetchCartItems } from '../services/cart';
 
 const Shop: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const token = useAppSelector((state) => state.auth?.token || '');
   const [products, setProducts] = useState<ShopProducts[]>([]);
+  const [cartItems, setCartItems] = useState<any[]>([]); // Add state for cart items
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
@@ -25,21 +26,30 @@ const Shop: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const subCategoryId = queryParams.get('subCategoryId');
 
-  // Fetch products
+  // Fetch products and cart items
   useEffect(() => {
-    const loadProducts = async () => {
+    const loadData = async () => {
       setIsLoading(true);
       try {
-        const response: ShopProductsResponse = await fetchProductsForCustomers(token);
-        if (response.success) {
+        // Fetch products
+        const productsResponse: ShopProductsResponse = await fetchProductsForCustomers(token);
+        if (productsResponse.success) {
           // Filter products by subCategoryId if provided
           const filteredProducts = subCategoryId
-            ? response.products.filter((p) => p.subCategoryId === subCategoryId)
-            : response.products;
+            ? productsResponse.products.filter((p) => p.subCategoryId === subCategoryId)
+            : productsResponse.products;
           setProducts(filteredProducts);
           setError(null);
         } else {
-          setError(response.message);
+          setError(productsResponse.message);
+        }
+
+        // Fetch cart items if token exists
+        if (token) {
+          const cartResponse = await fetchCartItems(token);
+          if (cartResponse.success) {
+            setCartItems(cartResponse.cartItems);
+          }
         }
       } catch (err: any) {
         setError(err.message);
@@ -48,10 +58,14 @@ const Shop: React.FC = () => {
         setIsLoading(false);
       }
     };
-    if (token) {
-      loadProducts();
-    }
+    
+    loadData();
   }, [token, subCategoryId]);
+
+  // Check if product is in cart
+  const isInCart = (productId: string) => {
+    return cartItems.some(item => item.product.productId === productId);
+  };
 
   // Handle Add to Cart
   const handleAddToCart = async (productId: string) => {
@@ -59,6 +73,11 @@ const Shop: React.FC = () => {
       const response = await addToCart(productId, token);
       if (response.success) {
         toast.success(response.message);
+        // Update cart items after adding
+        const cartResponse = await fetchCartItems(token);
+        if (cartResponse.success) {
+          setCartItems(cartResponse.cartItems);
+        }
       } else {
         toast.error(response.message);
       }
@@ -315,19 +334,32 @@ const Shop: React.FC = () => {
                     }`}>
                       {(product.availabilityStatus.replace('_', ' ')).toUpperCase()}
                     </span>
+                    <div className="relative">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleAddToCart(product.productId)}
-                      disabled={product.availabilityStatus !== 'in_stock'}
+                      disabled={product.availabilityStatus !== 'in_stock' || isInCart(product.productId)}
                       className={`p-2 rounded-full ${
                         product.availabilityStatus === 'in_stock'
-                          ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                          ? isInCart(product.productId)
+                            ? 'bg-green-500 text-white'
+                            : 'bg-indigo-600 text-white hover:bg-indigo-700'
                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       } transition-colors`}
                     >
-                      <FiShoppingCart />
+                      {isInCart(product.productId) ? <FiCheck /> : <FiShoppingCart />}
                     </motion.button>
+                    {isInCart(product.productId) && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute -top-1 -right-1 bg-white rounded-full p-1 shadow-sm"
+                      >
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      </motion.div>
+                    )}
+                  </div>
                   </div>
                 </div>
               </motion.div>
