@@ -14,7 +14,8 @@ export class OrderService{
             const order = this.ordersRepository.placeOrder(createOrderDto);
             return {
                 success: true,
-                message: 'Order is created successfully'
+                message: 'Order is created successfully',
+                order: order
             }
         }catch(error){
             console.error('Error in placing an order: ', error.message);

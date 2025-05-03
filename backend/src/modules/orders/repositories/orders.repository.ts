@@ -12,7 +12,7 @@ export class OrdersRepository{
             private readonly ordersRepository: Repository<Orders>,
     ) {} 
 
-    async placeOrder(createOrderDto: CreateOrderDto): Promise<Orders|null>{
+    async placeOrder(createOrderDto: CreateOrderDto): Promise<Orders>{
         try{
             const newOrder = this.ordersRepository.create(createOrderDto);
             return await this.ordersRepository.save(newOrder);

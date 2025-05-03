@@ -12,7 +12,7 @@ export class OrderItemsRepository{
         private readonly orderItemsRepository: Repository<OrderItems>,
     ) {}
 
-    async addOrderItems(createOrderItemsDto: CreateOrderItemsDto): Promise<OrderItems | null>{
+    async addOrderItems(createOrderItemsDto: CreateOrderItemsDto[]): Promise<OrderItems[] | null>{
         try{
             const newOrderItems = this.orderItemsRepository.create(createOrderItemsDto);
             return await this.orderItemsRepository.save(newOrderItems);

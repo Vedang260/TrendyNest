@@ -10,7 +10,7 @@ export class OrderItemsService{
         private readonly orderItemsRepository: OrderItemsRepository
     ){} 
     
-    async addOrderItems(createOrderItemsDto: CreateOrderItemsDto) {
+    async addOrderItems(createOrderItemsDto: CreateOrderItemsDto[]) {
         try{
             const orderItems = this.orderItemsRepository.addOrderItems(createOrderItemsDto);
             return {
