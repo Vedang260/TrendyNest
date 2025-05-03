@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Orders } from "../entities/orders.entity";
 import { Repository } from "typeorm";
-import { createOrderDto } from "../dtos/createOrder.dto";
+import { CreateOrderDto } from "../dtos/createOrder.dto";
 import { OrderStatus } from "src/common/enums/orderStatus.enums";
 
 @Injectable()
@@ -12,7 +12,7 @@ export class OrdersRepository{
             private readonly ordersRepository: Repository<Orders>,
     ) {} 
 
-    async placeOrder(createOrderDto: createOrderDto): Promise<Orders|null>{
+    async placeOrder(createOrderDto: CreateOrderDto): Promise<Orders|null>{
         try{
             const newOrder = this.ordersRepository.create(createOrderDto);
             return await this.ordersRepository.save(newOrder);
