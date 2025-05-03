@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { VendorOrders } from "./vendorOrders.entity";
 
 @Entity({ name: 'revenue' })
 export class Revenue{
@@ -19,6 +20,10 @@ export class Revenue{
 
     @Column()
     vendorEarnings: number;
+
+    @OneToOne(() => VendorOrders)
+    @JoinColumn({ name: 'vendorOrderId' })
+    vendorOrders: VendorOrders;
 
     @CreateDateColumn()
     createdAt: Date;
