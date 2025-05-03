@@ -7,8 +7,9 @@ import { Repository } from "typeorm";
 export class OrdersRepository{
     constructor(
             @InjectRepository(Orders)
-            private readonly productsRepository: Repository<Orders>,
+            private readonly ordersRepository: Repository<Orders>,
     ) {} 
 
+    async 
     
 }
