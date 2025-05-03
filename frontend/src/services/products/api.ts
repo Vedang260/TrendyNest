@@ -99,3 +99,17 @@ export const fetchProductsForCustomers = async (token: string) => {
   throw new Error(error.response?.data?.message || 'Error in fetching the products for Customers');
   }
 };
+
+export const fetchProductDetails = async(productId: string, token: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/products/${productId}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+  throw new Error(error.response?.data?.message || 'Error in fetching the products for Customers');
+  }
+};

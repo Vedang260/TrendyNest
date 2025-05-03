@@ -6,6 +6,7 @@ import ApprovedProducts from './components/admin/products/ApprovedProducts';
 import RejectedProducts from './components/admin/products/RejectedProducts';
 import Shop from './pages/Shop';
 import CartComponent from './components/Cart';
+import ProductPage from './pages/Product';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -36,11 +37,13 @@ import CartComponent from './components/Cart';
         ],
       },
       {
+        path: 'customer',
         element: <ProtectedRoute roles={['customer']} />,
         children: [
-          {path: 'customer/shop', element: <Shop/>}
+          { path: 'product/:productId', element: <ProductPage /> },
+          { path: 'shop', element: <Shop /> }
         ]
-      }
+      }      
     ],
   },
 ]);

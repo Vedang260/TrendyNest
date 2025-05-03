@@ -1,11 +1,15 @@
 const API_BASE_URL = 'http://localhost:8000/api';
 import axios from 'axios';
 
-export const addToCart = async(productId: string, token: string) => {
+export const addToCart = async(productId: string, token: string, quantity?: number) => {
     try {
+        let newQuantity = 1;
+        if(quantity){
+            newQuantity = quantity > 1 ? quantity : 1;
+        }
         const cartItem = {
             productId,
-            quantity: 1
+            quantity: newQuantity
         }
         const response = await axios.post(`${API_BASE_URL}/cart-items/add`, 
             {cartItem},

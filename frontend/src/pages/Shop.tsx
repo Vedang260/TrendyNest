@@ -69,7 +69,7 @@ const Shop: React.FC = () => {
 
   // Handle Product Click
   const handleProductClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    navigate(`/customer/product/${productId}`);
   };
 
   // Apply sorting

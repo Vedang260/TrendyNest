@@ -36,4 +36,4 @@ export interface ShopProductsResponse {
     success: boolean;
     message: string;
     products: ShopProducts[];
-  }
+}
