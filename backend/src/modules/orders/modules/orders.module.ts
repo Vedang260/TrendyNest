@@ -18,6 +18,6 @@ import { OrderController } from '../controllers/orders.controller';
     OrderService,
     OrdersRepository
   ],
-  exports: [OrderService, OrdersRepository],
+  exports: [OrderService, OrdersRepository, BullModule],
 })
 export class OrdersModule {} 
