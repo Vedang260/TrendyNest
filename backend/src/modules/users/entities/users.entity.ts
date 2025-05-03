@@ -1,5 +1,6 @@
 import { UserRole } from "src/common/enums/roles.enums";
 import { Notifications } from "src/modules/notifications/entities/notification.entity";
+import { Orders } from "src/modules/orders/entities/orders.entity";
 import { Payments } from "src/modules/payments/entities/payment.entity";
 import { VendorStores } from "src/modules/vendors/entities/vendorStore.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -29,6 +30,9 @@ export class User{
     
     @OneToMany(() => Notifications, (notification) => notification.user)
     notification: Notifications[];
+    
+    @OneToMany(() => Orders, (order) => order.customer)
+    order: Orders[];
     
     @CreateDateColumn()
     createdAt: Date;

@@ -1,5 +1,7 @@
 import { OrderItemStatus } from "src/common/enums/orderItemStatus.enums";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Orders } from "./orders.entity";
+import { Products } from "src/modules/products/entities/products.entity";
 
 @Entity({ name: 'order_items'})
 export class OrderItems{
@@ -20,6 +22,14 @@ export class OrderItems{
 
     @Column({ type: 'enum', enum: OrderItemStatus, default: OrderItemStatus.PENDING})
     status: OrderItemStatus;
+
+    @ManyToOne(() => Orders, (order) => order.orderItems)
+    @JoinColumn({ name: 'orderId'})
+    order: Orders;
+
+    @OneToOne(() => Products)
+    @JoinColumn({ name: 'productId' })
+    product: Products;
 
     @CreateDateColumn()
     createdAt: Date;
