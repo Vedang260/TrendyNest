@@ -3,13 +3,18 @@ import Stripe from 'stripe';
 import { PaymentRepository } from '../repositories/payment.repository';
 import { PaymentStatus } from '../../../common/enums/paymentStatus.enums';
 import * as dotenv from 'dotenv';
+import { Queue } from 'bullmq';
+import { InjectQueue } from '@nestjs/bull';
 dotenv.config();
 
 @Injectable()
 export class PaymentService {
   private stripe: Stripe;
 
-  constructor(private paymentRepository: PaymentRepository) {
+  constructor(
+    private paymentRepository: PaymentRepository,
+    @InjectQueue('ordersQueue') private ordersQueue: Queue,
+  ) {
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if(stripeKey){
         this.stripe = new Stripe(stripeKey, {
@@ -49,7 +54,7 @@ export class PaymentService {
             quantity: item.quantity,
             price: item.product.price,
           }))),
-          totalPrice: JSON.stringify(totalPrice)
+          totalAmount: JSON.stringify(totalPrice)
         },
       });
 
@@ -100,17 +105,29 @@ export class PaymentService {
 
   private async handlePaymentSuccess(session: Stripe.Checkout.Session) {
     console.log(`Payment succeeded: ${session.id}`);
-    
-    if(session.metadata){
-        await this.paymentRepository.updatePayment(session.metadata.paymentId, {
-            status: PaymentStatus.COMPLETED,
-            transactionId: session.payment_intent?.toString() || session.id,
+  
+    if (session.metadata) {
+      await this.paymentRepository.updatePayment(session.metadata.paymentId, {
+        status: PaymentStatus.COMPLETED,
+        transactionId: session.payment_intent?.toString() || session.id,
+      });
+  
+      const { paymentId, customerId, cartItems, totalAmount } = session.metadata;
+  
+      try {
+        await this.ordersQueue.add('processOrder', {
+          paymentId,
+          customerId,
+          cartItems,
+          totalAmount,
         });
-        
-        // Add your order fulfillment logic here
-
+        console.log('📦Order is sent to the Queue...');
+      } catch (error) {
+        console.error('❌ Failed to add job to queue:', error);
+      }
     }
   }
+  
 
   private async handlePaymentFailure(session: Stripe.Checkout.Session) {
     console.warn(`Payment failed: ${session.id}`);

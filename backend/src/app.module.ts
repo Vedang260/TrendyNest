@@ -13,11 +13,18 @@ import { ProductsModule } from './modules/products/module/products.module';
 import { CartItemsModule } from './modules/cart/modules/cartItems.module';
 import { DashboardModule } from './modules/dashboard/modules/dashboard.module';
 import { PaymentModule } from './modules/payments/modules/payment.module';
+import { bullConfig } from './config/queue.config';
+import { BullModule } from '@nestjs/bull';
+import { OrdersModule } from './modules/orders/modules/orders.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(typeOrmConfig),
+    BullModule.forRootAsync({                 
+      useFactory: bullConfig,
+      inject: [ConfigService],
+    }),
     AuthModule,
     UsersModule,
     CategoryModule,
@@ -27,6 +34,7 @@ import { PaymentModule } from './modules/payments/modules/payment.module';
     CartItemsModule,
     DashboardModule,
     PaymentModule,
+    OrdersModule,
     UploadModule,
   ],
 })
@@ -45,7 +53,8 @@ export class AppModule {
       { path: 'products', method: RequestMethod.ALL },
       { path: 'cart-items', method: RequestMethod.ALL },
       { path: 'dashboard', method: RequestMethod.ALL },
-      { path: 'payments', method: RequestMethod.ALL}
+      { path: 'payments', method: RequestMethod.ALL },
+      { path: 'orders', method: RequestMethod.ALL }
     );
   }
 }

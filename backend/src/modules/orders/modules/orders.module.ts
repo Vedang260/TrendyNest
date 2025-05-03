@@ -5,6 +5,7 @@ import { BullModule } from '@nestjs/bull';
 import { OrdersRepository } from '../repositories/orders.repository';
 import { OrderService } from '../services/orders.service';
 import { OrderController } from '../controllers/orders.controller';
+import { OrderProcessor } from '../processor/orders.processor';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { OrderController } from '../controllers/orders.controller';
   controllers: [OrderController],
   providers: [
     OrderService,
-    OrdersRepository
+    OrdersRepository,
+    OrderProcessor
   ],
   exports: [OrderService, OrdersRepository, BullModule],
 })

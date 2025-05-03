@@ -5,9 +5,13 @@ import { PaymentsController } from '../controllers/payment.controller';
 import { PaymentService } from '../services/payment.service';
 import { PaymentRepository } from '../repositories/payment.repository';
 import { WebhookController } from '../controllers/webhook.controller';
+import { OrdersModule } from 'src/modules/orders/modules/orders.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payments])],
+  imports: [TypeOrmModule.forFeature([Payments]),
+  OrdersModule
+  ],
   controllers: [PaymentsController, WebhookController],
   providers: [PaymentService, PaymentRepository ],
   exports: [PaymentService, PaymentRepository ],
