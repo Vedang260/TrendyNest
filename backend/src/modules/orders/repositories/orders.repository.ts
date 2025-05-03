@@ -31,6 +31,15 @@ export class OrdersRepository{
         }
     }
 
+    async getAllOrders(): Promise<Orders[]>{
+        try{
+            return await this.ordersRepository.find();
+        }catch(error){
+            console.error('Error in fetching all the Orders: ', error.message);
+            throw new InternalServerErrorException('Error in fetching all the orders');
+        }
+    }
+
     async updateOrderStatus(orderId: string, status: OrderStatus): Promise<boolean>{
         try{
             const result = await this.ordersRepository.update({ orderId }, { status });

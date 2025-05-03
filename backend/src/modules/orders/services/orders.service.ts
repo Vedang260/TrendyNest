@@ -25,6 +25,24 @@ export class OrderService{
         }
     }
 
+    async getAllOrders(){
+        try{
+            const orders = this.ordersRepository.getAllOrders();
+            return{
+                success: true,
+                message: 'All orders are fetched',
+                orders: orders
+            }
+        }catch(error){
+            console.error('Error in fetching all the orders: ', error.message);
+            return{
+                success: false,
+                message: 'Failed to fetch the orders',
+                orders: null
+            }
+        }
+    }
+    
     async getOrder(customerId: string){
         try{
             const orders = this.ordersRepository.getOrder(customerId);
