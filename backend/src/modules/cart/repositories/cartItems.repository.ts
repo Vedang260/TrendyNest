@@ -69,6 +69,16 @@ export class CartItemsRepository{
           console.error('❌ Error in getting all cart-items:', error.message);
           throw new InternalServerErrorException('Error in getting all cart-items');
         }
-      }
+    }
+
+    // clear all the cart Items
+    async clearCartItems(cartId: string){
+        try{
+            return await this.cartItemsRepository.delete({cartId});
+        }catch(error){
+            console.error('Error in clearing all the cart Items');
+            throw new InternalServerErrorException('Error in clearing all the cart Items');
+        }
+    }
       
 }

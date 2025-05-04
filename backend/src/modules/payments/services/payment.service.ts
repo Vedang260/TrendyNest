@@ -45,11 +45,12 @@ export class PaymentService {
         })),
         mode: 'payment',
         success_url: `http://localhost:5173/`,
-          cancel_url: `http://localhost:5173/cancel`,
+        cancel_url: `http://localhost:5173/cancel`,
         metadata: {
           paymentId: payment.paymentId,
           customerId: customerId,
           cartItems: JSON.stringify(cartItems.map(item => ({
+            cartItemsId: item.cartItemsId,
             productId: item.product.productId,
             quantity: item.quantity,
             price: item.product.price,
@@ -127,7 +128,6 @@ export class PaymentService {
       }
     }
   }
-  
 
   private async handlePaymentFailure(session: Stripe.Checkout.Session) {
     console.warn(`Payment failed: ${session.id}`);

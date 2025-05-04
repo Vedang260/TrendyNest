@@ -89,20 +89,20 @@ export class CartItemsService{
 
     async getAllCartItems(customerId: string): Promise<{success: boolean; message: string; cartItems: any[] | null}> {
         try{
-                const cart = await this.cartRepository.checkCartExists(customerId);
-                if(cart){
-                    const cartItems = await this.cartItemsRepository.getAllCartItems(cart?.cartId);
-                    return {
-                        success: true,
-                        message: 'All Cart-Items are fetched successfully',
-                        cartItems: cartItems
-                    }
-                }
-                return{
+            const cart = await this.cartRepository.checkCartExists(customerId);
+            if(cart){
+                const cartItems = await this.cartItemsRepository.getAllCartItems(cart?.cartId);
+                return {
                     success: true,
-                    message: 'Plz add items into the Cart',
-                    cartItems: null
+                    message: 'All Cart-Items are fetched successfully',
+                    cartItems: cartItems
                 }
+            }
+            return{
+                success: true,
+                message: 'Plz add items into the Cart',
+                cartItems: null
+            }
         }catch(error){
             console.error('Error in fetching all cartItems:', error.message);
             return {
@@ -110,6 +110,19 @@ export class CartItemsService{
                 message: 'Failed to fetch All cartItems',
                 cartItems: null
             }
+        }
+    }
+
+    async clearCartItems(customerId: string){
+        try{
+            const cart = await this.cartRepository.checkCartExists(customerId);
+            if(cart){
+                await this.cartItemsRepository.clearCartItems(cart.cartId);
+            }else{
+                throw new Error('Cart is not found.');
+            }
+        }catch(error){
+            console.error('Error in clearing the Cart Items: ', error.message);
         }
     }
 }
