@@ -7,6 +7,7 @@ import RejectedProducts from './components/admin/products/RejectedProducts';
 import Shop from './pages/Shop';
 import CartComponent from './components/Cart';
 import ProductPage from './pages/Product';
+import PaymentSuccess from './pages/Payment';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -40,8 +41,9 @@ import ProductPage from './pages/Product';
         path: 'customer',
         element: <ProtectedRoute roles={['customer']} />,
         children: [
+          { path: 'payment-success', element: <PaymentSuccess /> },
           { path: 'product/:productId', element: <ProductPage /> },
-          { path: 'payment-sucess?paymentId=:paymentId', element: <ProductPage /> },
+
           { path: 'shop', element: <Shop /> }
         ]
       }      

@@ -44,7 +44,7 @@ export class PaymentService {
           quantity: Number(item.quantity),
         })),
         mode: 'payment',
-        success_url: `http://localhost:5173/`,
+        success_url: `http://localhost:5173/customer/payment-success?paymentId=${payment.paymentId}`,
         cancel_url: `http://localhost:5173/cancel`,
         metadata: {
           paymentId: payment.paymentId,

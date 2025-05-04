@@ -32,7 +32,7 @@ export const fetchPaymentDetails = async(paymentId: string, token: string) => {
             },
         });
         console.log("", response);
-        return response;
+        return response.data;
     }catch(error: any){
         throw new Error(error.response?.data?.message || 'Error in fetching the payment details');
     }

@@ -144,7 +144,7 @@ const PaymentSuccess = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-500">Amount Paid</h3>
-                  <p className="text-2xl font-bold text-indigo-600">₹{payment.amount}</p>
+                  <p className="text-2xl font-bold text-indigo-600">₹ {payment.amount}</p>
                 </div>
               </div>
 
@@ -234,7 +234,7 @@ const PaymentSuccess = () => {
               View Your Orders
             </button>
             <button
-              onClick={() => navigate('/shop')}
+              onClick={() => navigate('/customer/shop')}
               className="px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
             >
               Continue Shopping
