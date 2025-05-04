@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiDollarSign, FiCreditCard, FiCalendar, FiUser, FiShield } from 'react-icons/fi';
+import { FiCheckCircle, FiDollarSign, FiCreditCard, FiUser, FiShield } from 'react-icons/fi';
 import { fetchPaymentDetails } from '../services/payment';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
