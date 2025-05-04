@@ -45,7 +45,7 @@ export class PaymentService {
         })),
         mode: 'payment',
         success_url: `http://localhost:5173/customer/payment-success?paymentId=${payment.paymentId}`,
-        cancel_url: `http://localhost:5173/cancel`,
+        cancel_url: `http://localhost:5173/customer/payment-failed`,
         metadata: {
           paymentId: payment.paymentId,
           customerId: customerId,
