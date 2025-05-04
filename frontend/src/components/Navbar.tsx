@@ -7,6 +7,7 @@ import CategoriesDropdown from './CategoriesDropdown';
 import { fetchCartItems } from '../services/cart';
 import CartComponent from './Cart';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Navbar: React.FC = () => {
   const navItems = ['Home', 'Shop', 'Categories', 'About', 'Contact'];
@@ -35,12 +36,29 @@ const Navbar: React.FC = () => {
     }
   }, [token, isCartOpen]);
 
-  const icons = [
-    <FiSearch key="search" />, 
-    <FiHeart key="heart" />, 
-    <FiShoppingBag key="bag" />, 
-    <FiBell key="bell" />
-  ];
+  // In your Navbar.tsx, modify the icons section:
+const icons = [
+  <Link to="/search" key="search">
+    <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+      <FiSearch className="text-gray-700 hover:text-indigo-600 transition-colors text-2xl" />
+    </motion.div>
+  </Link>,
+  <Link to="/wishlist" key="heart">
+    <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+      <FiHeart className="text-gray-700 hover:text-indigo-600 transition-colors text-2xl" />
+    </motion.div>
+  </Link>,
+  <Link to="/customer/orders" key="bag">
+    <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+      <FiShoppingBag className="text-gray-700 hover:text-indigo-600 transition-colors text-2xl" />
+    </motion.div>
+  </Link>,
+  <button key="bell" onClick={() => toast('No new notifications')}>
+    <motion.div whileHover={{ scale: 1.2, rotate: 10 }}>
+      <FiBell className="text-gray-700 hover:text-indigo-600 transition-colors text-2xl" />
+    </motion.div>
+  </button>
+];
 
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);

@@ -8,6 +8,7 @@ import Shop from './pages/Shop';
 import ProductPage from './pages/Product';
 import PaymentSuccess from './pages/Payment';
 import PaymentFailed from './pages/PaymentFailed';
+import Orders from './components/Orders';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -41,6 +42,7 @@ import PaymentFailed from './pages/PaymentFailed';
         path: 'customer',
         element: <ProtectedRoute roles={['customer']} />,
         children: [
+          { path: 'orders', element: <Orders /> },
           { path: 'payment-success', element: <PaymentSuccess /> },
           { path: 'product/:productId', element: <ProductPage /> },
           { path: 'payment-failed', element: <PaymentFailed /> },
