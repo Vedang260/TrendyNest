@@ -7,13 +7,15 @@ import { fetchPaymentDetails } from '../services/payment';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-
+import { PaymentDetails } from '../types/payment';
+import { useAppSelector } from '../redux/hooks/hooks';
 
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [payment, setPayment] = useState<PaymentDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const token = useAppSelector((state) => state.auth?.token || '');
 
   // Extract paymentId from URL query params
   const queryParams = new URLSearchParams(location.search);
@@ -29,7 +31,7 @@ const PaymentSuccess = () => {
 
       try {
         setIsLoading(true);
-        const response = await fetchPaymentDetails(paymentId);
+        const response = await fetchPaymentDetails(paymentId, token);
         
         if (response.success) {
           setPayment(response.payment);

@@ -41,6 +41,7 @@ import ProductPage from './pages/Product';
         element: <ProtectedRoute roles={['customer']} />,
         children: [
           { path: 'product/:productId', element: <ProductPage /> },
+          { path: 'payment-sucess?paymentId=:paymentId', element: <ProductPage /> },
           { path: 'shop', element: <Shop /> }
         ]
       }      
