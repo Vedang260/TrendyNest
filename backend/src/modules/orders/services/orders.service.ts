@@ -28,7 +28,7 @@ export class OrderService{
 
     async getAllOrders(){
         try{
-            const orders = this.ordersRepository.getAllOrders();
+            const orders = await this.ordersRepository.getAllOrders();
             return{
                 success: true,
                 message: 'All orders are fetched',
@@ -46,7 +46,7 @@ export class OrderService{
     
     async getOrder(customerId: string){
         try{
-            const orders = this.ordersRepository.getOrder(customerId);
+            const orders = await this.ordersRepository.getOrder(customerId);
             return{
                 success: true,
                 message: 'Track your Orders',

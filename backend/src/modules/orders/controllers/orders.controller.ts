@@ -10,14 +10,14 @@ import { UserRole } from "src/common/enums/roles.enums";
 export class OrderController{
     constructor(private readonly orderService: OrderService) {}
 
-    @Get('admin')
+    @Get('admin/')
     @UseGuards(RolesGuard)
     @Roles(UserRole.ADMIN)
     async getAllOrders(){
         return this.orderService.getAllOrders();
     }
 
-    @Get('customer')
+    @Get('customer/')
     @UseGuards(RolesGuard)
     @Roles(UserRole.CUSTOMER)
     async getOrders(@Req() req: Request){

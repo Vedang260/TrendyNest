@@ -12,7 +12,7 @@ export class OrderItemsService{
     
     async addOrderItems(createOrderItemsDto: CreateOrderItemsDto[]) {
         try{
-            const orderItems = this.orderItemsRepository.addOrderItems(createOrderItemsDto);
+            const orderItems = await this.orderItemsRepository.addOrderItems(createOrderItemsDto);
             return {
                 success: true,
                 message: 'Order Items are added into the Order'
@@ -28,7 +28,7 @@ export class OrderItemsService{
 
     async fetchOrderItems(orderId: string){
         try{
-            const orderItems = this.orderItemsRepository.fetchOrderItems(orderId);
+            const orderItems = await this.orderItemsRepository.fetchOrderItems(orderId);
             return{
                 success: true,
                 message: 'Track your Order Items',
