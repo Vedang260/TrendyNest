@@ -137,4 +137,22 @@ export class PaymentService {
         });
     }
   }
+
+  async getPaymentDetails(paymentId: string){
+    try{
+      const payment = await this.paymentRepository.findById(paymentId);
+      return{
+        success: true,
+        message: 'Your Transaction was successfull',
+        payment: payment
+      }
+    }catch(error){
+      console.error('Error in fetching the Payment Details: ', error.message);
+      return{
+        success: false,
+        message: 'Your Transaction was not successfull',
+        payment: null
+      }
+    }
+  }
 }
