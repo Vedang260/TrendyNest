@@ -10,6 +10,7 @@ import PaymentSuccess from './pages/Payment';
 import PaymentFailed from './pages/PaymentFailed';
 import Orders from './components/Orders';
 import OrderItems from './components/OrderItems';
+import ChatButton from './components/ChatButton';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -48,7 +49,8 @@ import OrderItems from './components/OrderItems';
           { path: 'payment-success', element: <PaymentSuccess /> },
           { path: 'product/:productId', element: <ProductPage /> },
           { path: 'payment-failed', element: <PaymentFailed /> },
-          { path: 'shop', element: <Shop /> }
+          { path: 'shop', element: <Shop /> },
+          {element: <ChatButton />}
         ]
       }      
     ],
