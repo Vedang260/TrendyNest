@@ -187,7 +187,7 @@ const Orders = () => {
                             <div className="w-full border-t border-gray-200"></div>
                           </div>
                           <div className="relative flex justify-between">
-                            {getProgressSteps(order.status).map((step, stepIdx) => (
+                            {getProgressSteps(order.status).map((step) => (
                               <div key={step.name} className="flex flex-col items-center">
                                 <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
                                   step.status === 'complete' ? 'bg-indigo-600' : 
@@ -221,7 +221,7 @@ const Orders = () => {
 
                     <div className="flex justify-between items-center">
                       <button
-                        onClick={() => navigate(`/order-items/${order.orderId}`)}
+                        onClick={() => navigate(`/customer/order-items/${order.orderId}`)}
                         className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 transition-colors"
                       >
                         View details

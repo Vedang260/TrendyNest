@@ -7,3 +7,12 @@ export interface CustomerOrders {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface OrderItem {
+  orderItemsId: string;
+  mainImage: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  status: 'pending' | 'shipped' | 'delivered';
+}
