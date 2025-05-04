@@ -44,6 +44,21 @@ export class OrderService{
         }
     }
     
+    async getOrderById(orderId: string){
+        try{
+            const order = await this.ordersRepository.getOrderById(orderId);
+            return{
+                success: true,
+                order: order
+            }
+        }catch(error){
+            console.error('Error in finding the orderId: ', error.message);
+            return{
+                success: false
+            }
+        }
+    }
+
     async getOrder(customerId: string){
         try{
             const orders = await this.ordersRepository.getOrder(customerId);

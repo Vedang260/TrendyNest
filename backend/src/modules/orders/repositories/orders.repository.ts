@@ -40,6 +40,14 @@ export class OrdersRepository{
         }
     }
 
+    async getOrderById(orderId: string): Promise<Orders|null>{
+        try{
+            return await this.ordersRepository.findOne({ where: { orderId }});
+        }catch(error){
+            console.error('Error in finding the Order: ', error.message);
+            throw new InternalServerErrorException('Error in finding the order');
+        }
+    }
     async updateOrderStatus(orderId: string, status: OrderStatus): Promise<boolean>{
         try{
             const result = await this.ordersRepository.update({ orderId }, { status });

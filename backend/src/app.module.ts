@@ -17,6 +17,8 @@ import { bullConfig } from './config/queue.config';
 import { BullModule } from '@nestjs/bull';
 import { OrdersModule } from './modules/orders/modules/orders.module';
 import { OrderItemsModule } from './modules/orders/modules/orderItems.module';
+import { ChatModule } from './modules/chats/modules/chat.module';
+import { ChatGateway } from './modules/chats/gateways/chat.gateway';
 
 @Module({
   imports: [
@@ -37,8 +39,10 @@ import { OrderItemsModule } from './modules/orders/modules/orderItems.module';
     PaymentModule,
     OrdersModule,
     OrderItemsModule,
+    ChatModule,
     UploadModule,
   ],
+  providers: [ChatGateway]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
