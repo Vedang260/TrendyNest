@@ -25,4 +25,22 @@ export class DashboardService{
             }
         }
     }
+
+    async getOrdersDashboardDataForAdmin(): Promise<{ success: boolean; message: string; dashboard: any}>{
+        try{
+            const dashboardData = await this.dashboardRepository.getOrderDashboardStatsForAdmin();
+            return {
+                success: true,
+                message: 'Orders Dashboard data for Admin is fetched successfully',
+                dashboard: dashboardData
+            }
+        }catch(error){
+            console.error('Error in fetching Orders Dashboard data for Admin: ', error.message);
+            return {
+                success: false,
+                message: 'Failed to fetch Orders Dashboard Data for Admin',
+                dashboard: null
+            }
+        }
+    }
 }

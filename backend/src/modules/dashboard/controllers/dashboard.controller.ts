@@ -10,6 +10,13 @@ import { DashboardService } from '../services/dashboard.service';
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
+  @Get('/admin/orders')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getOrdersDashboardForAdmin(){
+    return this.dashboardService.getOrdersDashboardDataForAdmin();
+  }
+
   @Get('/admin')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
