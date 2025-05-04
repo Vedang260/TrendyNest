@@ -7,10 +7,12 @@ import { PaymentRepository } from '../repositories/payment.repository';
 import { WebhookController } from '../controllers/webhook.controller';
 import { OrdersModule } from 'src/modules/orders/modules/orders.module';
 import { BullModule } from '@nestjs/bull';
+import { OrderItemsModule } from 'src/modules/orders/modules/orderItems.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Payments]),
-  OrdersModule
+  OrdersModule,
+  OrderItemsModule
   ],
   controllers: [PaymentsController, WebhookController],
   providers: [PaymentService, PaymentRepository ],

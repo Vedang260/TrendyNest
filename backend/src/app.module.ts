@@ -16,6 +16,7 @@ import { PaymentModule } from './modules/payments/modules/payment.module';
 import { bullConfig } from './config/queue.config';
 import { BullModule } from '@nestjs/bull';
 import { OrdersModule } from './modules/orders/modules/orders.module';
+import { OrderItemsModule } from './modules/orders/modules/orderItems.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { OrdersModule } from './modules/orders/modules/orders.module';
     DashboardModule,
     PaymentModule,
     OrdersModule,
+    OrderItemsModule,
     UploadModule,
   ],
 })
@@ -54,7 +56,8 @@ export class AppModule {
       { path: 'cart-items', method: RequestMethod.ALL },
       { path: 'dashboard', method: RequestMethod.ALL },
       { path: 'payments', method: RequestMethod.ALL },
-      { path: 'orders', method: RequestMethod.ALL }
+      { path: 'orders', method: RequestMethod.ALL },
+      { path: 'order-items', method: RequestMethod.ALL },
     );
   }
 }

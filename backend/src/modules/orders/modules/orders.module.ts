@@ -6,6 +6,7 @@ import { OrdersRepository } from '../repositories/orders.repository';
 import { OrderService } from '../services/orders.service';
 import { OrderController } from '../controllers/orders.controller';
 import { OrderProcessor } from '../processor/orders.processor';
+import { OrderItemsModule } from './orderItems.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { OrderProcessor } from '../processor/orders.processor';
     BullModule.registerQueue({
         name: 'ordersQueue',
     }),
+    OrderItemsModule
   ],
   controllers: [OrderController],
   providers: [
