@@ -94,7 +94,7 @@
 ## API Documentation
  
 The complete API documentation is available on Postman:
-[Aether Mind API Documentation](https://documenter.getpostman.com/view/26606017/2sB2j69A4w)
+[Trendy Nest API Documentation](https://documenter.getpostman.com/view/26606017/2sB2j69A4w)
  
  
 # 📽️ Trendy Nest - Demo Video  
