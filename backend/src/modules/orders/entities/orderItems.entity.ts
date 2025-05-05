@@ -27,9 +27,10 @@ export class OrderItems{
     @JoinColumn({ name: 'orderId'})
     order: Orders;
 
-    @OneToOne(() => Products)
+    @ManyToOne(() => Products)
     @JoinColumn({ name: 'productId' })
     product: Products;
+
 
     @CreateDateColumn()
     createdAt: Date;
