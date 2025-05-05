@@ -16,3 +16,18 @@ export const fetchAdminDashboardData = async (token: string) => {
       throw new Error(error.response?.data?.message || 'Registration failed');
     }
 };
+
+export const fetchOrdersDashboard = async (token: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/dashboard/admin/orders`, {
+      headers: {
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'application/json',
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Registration failed');
+  }
+};

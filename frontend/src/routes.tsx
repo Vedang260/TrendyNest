@@ -11,6 +11,7 @@ import PaymentFailed from './pages/PaymentFailed';
 import Orders from './components/Orders';
 import OrderItems from './components/OrderItems';
 import ChatButton from './components/ChatButton';
+import OrdersDashboard from './components/admin/orders/OrdersDashboard';
 
 // import ProtectedRoute from './components/common/ProtectedRoute'
  const App = lazy(() => import('./App'));
@@ -34,6 +35,7 @@ import ChatButton from './components/ChatButton';
         element: <ProtectedRoute roles={['admin']} />,
         children: [
           { path: "admin", element: <AdminDashboard /> },
+          { path: 'admin/orders/dashboard', element: <OrdersDashboard />},
           { path: 'admin/products/pending', element: <PendingProducts />},
           { path: 'admin/products/approved', element: <ApprovedProducts />},
           { path: 'admin/products/rejected', element: <RejectedProducts />}

@@ -47,6 +47,15 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onCollapseChange }) => {
       ],
     },
     {
+      name: 'Orders',
+      icon: <FiShoppingBag />,
+      path: '/admin/orders',
+      subItems: [
+        { name: '📊Dashboard', path: '/admin/orders/dashboard' },
+        { name: 'View Orders', path: '/admin/orders/' },
+      ],
+    },
+    {
       name: 'Products',
       icon: <FiBox />,
       path: '/admin/products',
