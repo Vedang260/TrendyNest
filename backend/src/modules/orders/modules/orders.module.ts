@@ -8,6 +8,7 @@ import { OrderController } from '../controllers/orders.controller';
 import { OrderProcessor } from '../processor/orders.processor';
 import { OrderItemsModule } from './orderItems.module';
 import { CartItemsModule } from 'src/modules/cart/modules/cartItems.module';
+import { EMailModule } from 'src/utils/mails/email.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { CartItemsModule } from 'src/modules/cart/modules/cartItems.module';
         name: 'ordersQueue',
     }),
     OrderItemsModule,
-    CartItemsModule
+    CartItemsModule,
+    EMailModule
   ],
   controllers: [OrderController],
   providers: [

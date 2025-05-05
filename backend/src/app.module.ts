@@ -19,6 +19,7 @@ import { OrdersModule } from './modules/orders/modules/orders.module';
 import { OrderItemsModule } from './modules/orders/modules/orderItems.module';
 import { ChatModule } from './modules/chats/modules/chat.module';
 import { ChatGateway } from './modules/chats/gateways/chat.gateway';
+import { EMailModule } from './utils/mails/email.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ChatGateway } from './modules/chats/gateways/chat.gateway';
     OrderItemsModule,
     ChatModule,
     UploadModule,
+    EMailModule
   ],
   providers: [ChatGateway]
 })

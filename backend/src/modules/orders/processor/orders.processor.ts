@@ -3,11 +3,13 @@ import { Job, Queue } from 'bull';
 import { OrderService } from '../services/orders.service';
 import { CreateOrderDto } from '../dtos/createOrder.dto';
 import { OrderItemsService } from '../services/orderItems.service';
+import { EMailService } from 'src/utils/mails/email.service';
 
 @Processor('ordersQueue')
 export class OrderProcessor {
   
   constructor(
+    private readonly emailService: EMailService,
     private readonly orderService: OrderService,
     private readonly orderItemsService: OrderItemsService,
     @InjectQueue('cartItemsQueue') 
@@ -52,6 +54,8 @@ export class OrderProcessor {
 
         await this.cartItemsQueue.add('processCartItems', { customerId });
         console.log("Cart Items are sent into the queue...")
+
+        await this.emailService.sendPurchaseConfirmMail("vedang2607@gmail.com", paymentId, customerId, order.orderId, newCartItems);
       }
     }catch(error){
         console.error('Error in order processing: ', error.message);

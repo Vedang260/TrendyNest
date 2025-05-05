@@ -5,6 +5,7 @@ import { PaymentStatus } from '../../../common/enums/paymentStatus.enums';
 import * as dotenv from 'dotenv';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bull';
+import { EMailService } from 'src/utils/mails/email.service';
 dotenv.config();
 
 @Injectable()
