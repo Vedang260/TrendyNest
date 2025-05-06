@@ -60,5 +60,22 @@ export class OrderItemsService{
                 message: 'Failed to update the Order Item Status'
             }
         }
-    }   
+    }  
+    
+    async getSalesHistoryOfProduct(productId: string){
+        try{
+            const monthlySales = await this.orderItemsRepository.getSalesDataForProduct(productId);
+            return{
+                success: true,
+                message: 'Generated the sales data for the given product',
+                monthlySales: monthlySales
+            }
+        }catch(error){
+            console.error('Error in fetching the sales History of the product: ', error.message);
+            return{
+                success: false,
+                message: 'Failed to generate sales History',
+            }
+        }
+    }
 }

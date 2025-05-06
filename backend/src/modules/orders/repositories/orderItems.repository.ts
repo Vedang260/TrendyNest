@@ -1,13 +1,14 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderItems } from "../entities/orderItems.entity";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { CreateOrderItemsDto } from "../dtos/createOrderItems.dto";
 import { OrderItemStatus } from "src/common/enums/orderItemStatus.enums";
 
 @Injectable()
 export class OrderItemsRepository{
     constructor(
+        private readonly dataSource: DataSource,
         @InjectRepository(OrderItems)
         private readonly orderItemsRepository: Repository<OrderItems>,
     ) {}
@@ -49,6 +50,44 @@ export class OrderItemsRepository{
         }catch(error){
             console.error('Error in updating the status of the Order Item: ', error.message);
             throw new InternalServerErrorException('Error in updating the order Items status');
+        }
+    }
+
+    async getSalesDataForProduct(productId: string){
+        try{
+            const result = await this.dataSource.query(`
+                WITH months AS (
+                    SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '3 months' AS month
+                    UNION ALL
+                    SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '2 months'
+                    UNION ALL
+                    SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
+                    UNION ALL
+                    SELECT DATE_TRUNC('month', CURRENT_DATE)
+                    ),
+                    product_data AS (
+                    SELECT 
+                        DATE_TRUNC('month', "createdAt") AS month,
+                        SUM(quantity) AS quantity
+                    FROM 
+                        public.order_items
+                    WHERE 
+                        "productId" = 'c5b6668d-90d2-4501-b6fe-2abb9130d309'
+                        AND "createdAt" >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '3 months'
+                    GROUP BY 
+                        DATE_TRUNC('month', "createdAt")
+                    )
+                    SELECT 
+                    array_agg(COALESCE(p.quantity, 0) ORDER BY m.month) AS quantity_array
+                    FROM 
+                    months m
+                    LEFT JOIN 
+                    product_data p ON m.month = p.month;
+            `)
+            return result.quantity_array;
+        }catch(error){
+            console.error('Error in fetching the sales data for the product: ', error.message);
+            throw new InternalServerErrorException('Error in fetching the sales of the product');
         }
     }
 }
