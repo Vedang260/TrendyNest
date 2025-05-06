@@ -64,7 +64,7 @@ const Shop: React.FC = () => {
 
   // Check if product is in cart
   const isInCart = (productId: string) => {
-    return cartItems.some(item => item.product.productId === productId);
+    return cartItems?.some(item => item.product.productId === productId);
   };
 
   // Handle Add to Cart
