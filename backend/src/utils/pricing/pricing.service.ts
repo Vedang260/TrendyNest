@@ -12,19 +12,19 @@ export class PricingService{
     ) {}
 
     // Runs every Sunday at 1 AM
-  @Cron('0 1 * * 0')
-  async enqueuePriceJobs() {
-    const result = await this.productService.getAllProducts();
-    if(result.success){
-        const products = result.products;
-        for (const product of products) {
-            await this.pricingQueue.add('update-price', {
-              productId: product.productId,
-              price: product.price,
-              stock: product.stockQuantity,
-            });
-        }
-        console.log(`✅ Enqueued ${products.length} pricing jobs.`);
-    } 
-  }
+    @Cron('39 13 * * 2')
+    async enqueuePriceJobs() {
+        const result = await this.productService.getAllProducts();
+        if(result.success){
+            const products = result.products;
+            for (const product of products) {
+                await this.pricingQueue.add('update-price', {
+                productId: product.productId,
+                price: product.price,
+                stock: product.stockQuantity,
+                });
+            }
+            console.log(`✅ Enqueued ${products.length} pricing jobs.`);
+        } 
+    }
 }

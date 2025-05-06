@@ -56,7 +56,9 @@ export class PricingProcessor {
         if (multiplier < 0.8) multiplier = 0.8;
         if (multiplier > 1.5) multiplier = 1.5;
       
-        return parseFloat((price * multiplier).toFixed(2));
+        const predictedPrice = parseFloat((price * multiplier).toFixed(2));
+        const roundedPrice = Math.round(predictedPrice); 
+        return roundedPrice;
     } catch (error) {
       console.error('❌ AI API failed:', error.message);
       return price;

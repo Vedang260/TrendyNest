@@ -54,7 +54,7 @@ export class OrderItemsRepository{
     }
 
     async getSalesDataForProduct(productId: string){
-        try{
+        try {
             const result = await this.dataSource.query(`
                 WITH months AS (
                     SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '3 months' AS month
@@ -64,30 +64,31 @@ export class OrderItemsRepository{
                     SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
                     UNION ALL
                     SELECT DATE_TRUNC('month', CURRENT_DATE)
-                    ),
-                    product_data AS (
+                ),
+                product_data AS (
                     SELECT 
                         DATE_TRUNC('month', "createdAt") AS month,
                         SUM(quantity) AS quantity
                     FROM 
                         public.order_items
                     WHERE 
-                        "productId" = 'c5b6668d-90d2-4501-b6fe-2abb9130d309'
+                        "productId" = $1
                         AND "createdAt" >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '3 months'
                     GROUP BY 
                         DATE_TRUNC('month', "createdAt")
-                    )
-                    SELECT 
+                )
+                SELECT 
                     array_agg(COALESCE(p.quantity, 0) ORDER BY m.month) AS quantity_array
-                    FROM 
+                FROM 
                     months m
-                    LEFT JOIN 
+                LEFT JOIN 
                     product_data p ON m.month = p.month;
-            `)
-            return result.quantity_array;
-        }catch(error){
+            `, [productId]); // Using parameterized query to prevent SQL injection
+    
+            return result[0]?.quantity_array || []; // safe access
+        } catch (error) {
             console.error('Error in fetching the sales data for the product: ', error.message);
             throw new InternalServerErrorException('Error in fetching the sales of the product');
         }
-    }
+    }    
 }
