@@ -5,6 +5,8 @@ import { Cron } from '@nestjs/schedule';
 import { UsersService } from 'src/modules/users/services/users.service';
 import { CouponRepository } from '../repositories/coupon.repository';
 import { CreateCouponDto } from '../dtos/createCoupon.dto';
+import { discountType } from 'src/common/enums/discountType.enums';
+import { couponType } from 'src/common/enums/couponType.enums';
 
 @Injectable()
 export class CouponService{
@@ -22,7 +24,7 @@ export class CouponService{
             );
               
               // Save all coupons to DB (bulk insert recommended)
-            await this.couponRepository.save(couponsToInsert); 
+            await this.couponRepository.createCoupons(couponsToInsert); 
         }catch(error){
 
         }
@@ -44,8 +46,18 @@ export class CouponService{
                 minPurchase = 1000;
             }
             
+            const validFromDate = new Date();
+            const validToDate = new Date(validFromDate);
+            validToDate.setDate(validToDate.getDate() + 3);
+            
             const createCouponDto: CreateCouponDto = {
-
+                code: "HDB",
+                discountType: discountType.PERCENTAGE,
+                discountValue: discount,
+                minPurchaseAmount: minPurchase,
+                validFrom: validFromDate,
+                validTo: validToDate,
+                couponType: couponType.BIRTHDAY
             }
         }catch(error){
             console.error('Error in finding Birthday Discounts: ', error.message);

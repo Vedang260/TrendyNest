@@ -1,9 +1,16 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import { DataSource } from "typeorm";
+import { DataSource, Repository } from "typeorm";
+import { CreateCouponDto } from "../dtos/createCoupon.dto";
+import { Coupon } from "../entities/coupon.entity";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class CouponRepository{
-    constructor(private readonly dataSource: DataSource) {}
+    constructor(
+        @InjectRepository(Coupon)
+        private readonly couponRepository: Repository<Coupon>,
+        private readonly dataSource: DataSource
+    ) {}
 
     async getBirthdayCustomers(){
         try{
@@ -25,6 +32,15 @@ export class CouponRepository{
         }catch(error){
             console.error('Error in fetching customers total purchase');
         
+        }
+    }
+
+    async createCoupons(createCouponDto: CreateCouponDto[]): Promise<Coupon[] | null>{
+        try{
+            return await this.couponRepository.save(createCouponDto);
+        }catch(error){
+            console.error('Error in creating Coupons: ', error.message);
+            throw new InternalServerErrorException('Error in creating coupons');
         }
     }
 }
