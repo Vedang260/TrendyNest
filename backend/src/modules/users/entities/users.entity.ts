@@ -22,6 +22,9 @@ export class User{
     @Column({ type: 'enum', enum: UserRole })
     role: UserRole;
 
+    @Column({ type: 'date', nullable: true })
+    dob: Date;
+
     @OneToMany(() => VendorStores, (store) => store.vendor)
     vendorStores: VendorStores[];
     
