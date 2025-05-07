@@ -22,9 +22,31 @@ export class UsersService {
         message: 'Internal Server Error'
       }
     }
-    
   }
 
+  async findCustomersDOB(){
+    try{
+      const customers = await this.usersRepository.findCustomersDOB();
+      if(customers){
+        return{
+          success: true,
+          message: 'Customers having Birthdays are fetched',
+          customers: customers
+        }
+      }
+      return{
+        success: true,
+        message: 'No customer is having birthday today',
+        customers: null
+      }
+    }catch(error){
+      console.error('Error in fetching the customers with dob: ', error.message);
+      return{
+        success: false,
+        message: 'Failed to find the customers'
+      }
+    }
+  }
   async findOne(id: string): Promise<User> {
     const user = await this.usersRepository.findOne(id);
     

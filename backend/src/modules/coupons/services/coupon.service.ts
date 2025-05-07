@@ -2,28 +2,35 @@ import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Cron } from '@nestjs/schedule';
-import { ProductService } from '../../modules/products/services/products.service';
+import { UsersService } from 'src/modules/users/services/users.service';
 
 @Injectable()
 export class CouponService{
     constructor(
-        private readonly productService: ProductService
+        private readonly usersService: UsersService
     ) {}
 
     // Runs every Day at 12:00 am
     @Cron('0 0 * * *')
-    async () {
-        const result = await this.userService.getCustomersDOB();
-        if(result.success){
-            const products = result.products;
-            for (const product of products) {
-                await this.pricingQueue.add('update-price', {
-                productId: product.productId,
-                price: product.price,
-                stock: product.stockQuantity,
-                });
+    async generateBirthdayCoupons() {
+        try{
+            const result = await this.usersService.findCustomersDOB();
+            if(result.success){
+                const customers = result?.customers;
+                if(customers){
+
+                }
             }
-            console.log(`✅ Enqueued ${products.length} pricing jobs.`);
-        } 
+        }catch(error){
+
+        }
+    }
+
+    private async generatePersonalizedBirthdayCoupons(){
+        try{
+
+        }catch(error){
+            console.error('Error in finding Birthday Discounts: ', error.message);
+        }
     }
 }
