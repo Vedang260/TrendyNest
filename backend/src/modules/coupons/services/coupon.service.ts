@@ -59,6 +59,7 @@ export class CouponService{
                 validTo: validToDate,
                 couponType: couponType.BIRTHDAY
             }
+            return createCouponDto;
         }catch(error){
             console.error('Error in finding Birthday Discounts: ', error.message);
         }

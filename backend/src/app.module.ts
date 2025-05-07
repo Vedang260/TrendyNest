@@ -21,6 +21,7 @@ import { ChatModule } from './modules/chats/modules/chat.module';
 import { ChatGateway } from './modules/chats/gateways/chat.gateway';
 import { EMailModule } from './utils/mails/email.module';
 import { PricingModule } from './utils/pricing/pricing.module';
+import { CouponModule } from './modules/coupons/modules/coupon.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { PricingModule } from './utils/pricing/pricing.module';
     ChatModule,
     UploadModule,
     EMailModule,
-    PricingModule
+    PricingModule,
+    CouponModule
   ],
   providers: [ChatGateway]
 })
