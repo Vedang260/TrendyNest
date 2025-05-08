@@ -37,6 +37,7 @@
     "class-validator": "^0.14.1",
     "cloudinary": "^2.6.0",
     "dotenv": "^16.5.0",
+    "handlers": "^1.0.3",
     "multer": "^1.4.5-lts.2",
     "nodemailer": "^6.10.1",
     "passport": "^0.7.0",

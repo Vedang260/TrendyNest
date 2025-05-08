@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 import { Cron } from '@nestjs/schedule';
-import { UsersService } from 'src/modules/users/services/users.service';
 import { CouponRepository } from '../repositories/coupon.repository';
 import { CreateCouponDto } from '../dtos/createCoupon.dto';
 import { discountType } from 'src/common/enums/discountType.enums';
